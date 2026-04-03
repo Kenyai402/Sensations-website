@@ -5,7 +5,7 @@ A modern, responsive web platform for a youth-focused art and music therapy
 initiative based in Nairobi, Kenya - inspired by the "Akili Yangu Raha Yangu" project.
 
 ## 🌍 Live Site
-[sensations-website.vercel.app] 
+[sensations-website.vercel.app] (sensations-website.vercel.app)
 
 ## ✨ Features
 - Art & Music therapy session discovery
