@@ -1,0 +1,311 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --warm-cream: oklch(0.985 0.005 285);
+  --muted-teal: oklch(0.52 0.09 200);
+  --soft-lavender: oklch(57.699% 0.26802 311.19);
+  --warm-coral: oklch(0.62 0.14 290);
+  --dark-slate: oklch(0.25 0.04 285);
+
+  --background: var(--warm-cream);
+  --foreground: var(--dark-slate);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--dark-slate);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--dark-slate);
+  --primary: var(--warm-coral);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: var(--muted-teal);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.94 0.01 285);
+  --muted-foreground: oklch(0.52 0.04 285);
+  --accent: var(--soft-lavender);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.91 0.02 285);
+  --input: oklch(0.97 0.01 285);
+  --ring: var(--soft-lavender);
+  --chart-1: var(--warm-coral);
+  --chart-2: var(--muted-teal);
+  --chart-3: var(--soft-lavender);
+  --chart-4: var(--muted-teal);
+  --chart-5: var(--warm-coral);
+  --radius: 1rem;
+  --sidebar: var(--warm-cream);
+  --sidebar-foreground: oklch(0.25 0.02 290);
+  --sidebar-primary: var(--warm-coral);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: var(--soft-lavender);
+  --sidebar-accent-foreground: oklch(0.25 0.02 290);
+  --sidebar-border: oklch(0.88 0.02 90);
+  --sidebar-ring: var(--muted-teal);
+}
+
+.dark {
+  --warm-cream: #0a0a0a;
+  --muted-teal: oklch(0.65 0.09 200);
+  --soft-lavender: oklch(57.699% 0.26802 311.19);
+  --warm-coral: oklch(0.72 0.14 290);
+  --dark-slate: #f0f0f0;
+
+  --background: #0a0a0a;
+  --foreground: #f0f0f0;
+  --card: #141414;
+  --card-foreground: #f0f0f0;
+  --popover: #141414;
+  --popover-foreground: #f0f0f0;
+  --primary: oklch(0.72 0.18 281);
+  --primary-foreground: #ffffff;
+  --secondary: #1e1e1e;
+  --secondary-foreground: #f0f0f0;
+  --muted: #1a1a1a;
+  --muted-foreground: #888888;
+  --accent: oklch(0.72 0.14 290);
+  --accent-foreground: #ffffff;
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: #2a2a2a;
+  --input: #1e1e1e;
+  --ring: oklch(0.72 0.18 281);
+  --chart-1: oklch(0.72 0.14 290);
+  --chart-2: oklch(0.65 0.09 200);
+  --chart-3: oklch(0.72 0.18 281);
+  --chart-4: oklch(0.65 0.09 200);
+  --chart-5: oklch(0.72 0.14 290);
+  --sidebar: #141414;
+  --sidebar-foreground: #f0f0f0;
+  --sidebar-primary: oklch(0.72 0.18 281);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1e1e1e;
+  --sidebar-accent-foreground: #f0f0f0;
+  --sidebar-border: #2a2a2a;
+  --sidebar-ring: oklch(0.72 0.18 281);
+}
+
+@theme inline {
+  --font-sans: var(--font-sans, 'Inter'), 'Inter', sans-serif;
+  --font-heading: var(--font-heading, 'Syne'), 'Syne', sans-serif;
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+
+  --color-warm-cream: var(--warm-cream);
+  --color-muted-teal: var(--muted-teal);
+  --color-soft-lavender: var(--soft-lavender);
+  --color-warm-coral: var(--warm-coral);
+  --color-dark-slate: var(--dark-slate);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   DARK MODE — nuclear override
+   page.tsx uses hardcoded bg classes that don't read CSS variables.
+   Forcefully reset every background and text in dark mode here.
+   ───────────────────────────────────────────────────────────────── */
+.dark {
+  color-scheme: dark;
+}
+
+/* Force the page wrapper and all sections to go black */
+.dark div,
+.dark section,
+.dark nav,
+.dark footer,
+.dark main {
+  background-color: transparent;
+  border-color: #2a2a2a;
+}
+
+/* The outermost page div gets the black background */
+.dark .min-h-screen {
+  background-color: #0a0a0a !important;
+}
+
+/* Navbar */
+.dark nav.fixed {
+  background-color: rgba(10, 10, 10, 0.95) !important;
+  border-bottom-color: #2a2a2a !important;
+}
+
+/* All white card surfaces */
+.dark .rounded-2xl,
+.dark .rounded-3xl {
+  background-color: #1a1228;
+  border-color: #2d1f4a;
+}
+
+/* Testimonial card purple border */
+.dark .bg-soft-lavender\/10 {
+  border: 1px solid  oklch(57.699% 0.26802 311.19) !important;
+  background-color: #1a1228 !important;
+}
+
+/* But keep gradient/image overlays transparent */
+.dark .rounded-2xl.overflow-hidden,
+.dark .rounded-3xl.overflow-hidden {
+  background-color: transparent;
+}
+
+/* Text */
+.dark h1, .dark h2,  .dark h4, .dark h5, .dark h6 {
+  color: #f0f0f0;
+}
+
+.dark p, .dark span, .dark a, .dark label {
+  color: #a9a0a0;
+}
+
+/* Footer text colors */
+.dark footer p,
+.dark footer span {
+  color: #888888;        /* ← tagline and copyright */
+}
+
+.dark footer a {
+  color: #8e8585;        /* ← nav links default */
+}
+
+.dark footer a:hover {
+  color: oklch(57.699% 0.26802 311.19);;   /* ← hover stays lavender */
+}
+
+.dark footer h3,
+.dark footer p.font-bold {
+  color: #f0f0f0;        /* ← section headings like "Navigate", "Connect" */
+}
+
+/* Keep brand-colored text bright */
+.dark .text-soft-lavender { color: oklch(57.699% 0.26802 311.19) !important; }
+.dark .text-muted-teal    { color: oklch(0.65 0.09 200) !important; }
+.dark .text-warm-coral    { color: oklch(0.72 0.14 290) !important; }
+.dark .text-white         { color: #ffffff !important; }
+
+/* Keep heading font color inside buttons white */
+.dark button h1, .dark button h2, .dark button h3,
+.dark button p, .dark button span {
+  color: inherit !important;
+}
+
+/* Nav links */
+.dark nav a {
+  color:  #ffffff;
+}
+.dark nav a:hover {
+  color:  oklch(57.699% 0.26802 311.19) ;
+}
+
+/* Sensations brand label in navbar */
+.dark nav span {
+  color: #ffffff !important;
+}
+
+/* Inputs */
+.dark input,
+.dark textarea {
+  background-color: #1e1e1e !important;
+  color: #f0f0f0 !important;
+  border-color: #2a2a2a !important;
+}
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #555555 !important;
+}
+
+/* Icon badge backgrounds — keep them dark-tinted */
+.dark [class*="bg-violet-"],
+.dark [class*="bg-teal-"],
+.dark [class*="bg-fuchsia-"],
+.dark [class*="bg-blue-"],
+.dark [class*="bg-purple-"],
+.dark [class*="bg-sky-"],
+.dark [class*="bg-pink-"],
+.dark [class*="bg-indigo-"],
+.dark [class*="bg-yellow-"],
+.dark [class*="bg-green-"],
+.dark [class*="bg-red-"] {
+  background-color: #1e1e1e !important;
+}
+
+/* Keep icon colors vivid */
+.dark [class*="text-violet-"] { color: oklch(0.72 0.18 281) !important; }
+.dark [class*="text-teal-"]   { color: oklch(0.65 0.09 200) !important; }
+.dark [class*="text-fuchsia-"]{ color: oklch(0.72 0.18 310) !important; }
+.dark [class*="text-blue-"]   { color: oklch(0.70 0.15 260) !important; }
+.dark [class*="text-purple-"] { color: oklch(0.72 0.18 285) !important; }
+.dark [class*="text-pink-"]   { color: oklch(0.72 0.18 350) !important; }
+.dark [class*="text-indigo-"] { color: oklch(0.70 0.15 270) !important; }
+.dark [class*="text-green-"]  { color: oklch(0.70 0.14 150) !important; }
+.dark [class*="text-yellow-"] { color: oklch(0.82 0.16 90) !important; }
+
+/* Floating hero icon cards */
+.dark [style*="animation: float"] {
+  background-color: #1e1e1e !important;
+  border-color: #333333 !important;
+}
+
+
+/* Art/Music therapy label pills at hero bottom */
+.dark .bg-white\/80 {
+  background-color: rgba(20, 20, 20, 0.9) !important;
+  color: #f0f0f0 !important;
+}
+
+
+
+@layer utilities {
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .animate-fadeIn {
+    animation: fadeIn 1s ease-out;
+  }
+}
