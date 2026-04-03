@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { supabase } from "@/lib/supabase";
 
-/* In-memory store (still useful as a backup log) */
 interface ContactSubmission {
   id: string;
   firstName: string;
@@ -11,21 +11,16 @@ interface ContactSubmission {
   createdAt: string;
   status: "new" | "read" | "responded";
 }
-const contactSubmissions: ContactSubmission[] = [];
 
 function generateId() {
   return `contact_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 }
 
-/* Resend email sender
-   Set RESEND_API_KEY in your .env.local file.
-   Set CONTACT_EMAIL to the address that receives the messages */
 async function sendEmailViaResend(submission: ContactSubmission) {
   const apiKey = process.env.RESEND_API_KEY;
   const toEmail = process.env.CONTACT_EMAIL || "hello@sensations.ke";
 
   if (!apiKey) {
-    // No key set — skip silently (still saves to in-memory store)
     console.warn("[Resend] RESEND_API_KEY not set. Email not sent.");
     return;
   }
@@ -69,7 +64,6 @@ async function sendEmailViaResend(submission: ContactSubmission) {
   }
 }
 
-/* Also send a confirmation email back to the user*/
 async function sendConfirmationEmail(submission: ContactSubmission) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return;
@@ -90,7 +84,7 @@ async function sendConfirmationEmail(submission: ContactSubmission) {
           <p style="color:#555;line-height:1.7;">We've received your message and our team will get back to you within <strong>2–4 hours</strong> during working hours (Mon–Sat, 9am–6pm EAT).</p>
           <p style="color:#555;line-height:1.7;">In the meantime, follow us on social media to stay connected with the Sensations community.</p>
           <div style="text-align:center;margin:32px 0;">
-            <a href="https://sensations.ke" style="background:#6d4fc9;color:white;padding:12px 28px;border-radius:999px;text-decoration:none;font-weight:600;font-size:14px;">Visit Our Website</a>
+            <a href="https://sensations-website.vercel.app" style="background:#6d4fc9;color:white;padding:12px 28px;border-radius:999px;text-decoration:none;font-weight:600;font-size:14px;">Visit Our Website</a>
           </div>
           <hr style="border:none;border-top:1px solid #e8e0f7;margin:24px 0;" />
           <p style="font-size:12px;color:#aaa;text-align:center;">The Sensations — Akili Yangu Raha Yangu<br/>Nairobi, Kenya · hello@sensations.ke</p>
@@ -100,9 +94,7 @@ async function sendConfirmationEmail(submission: ContactSubmission) {
   });
 }
 
-/* Route handlers*/
-
-// POST /api/contact — submit a contact message
+// POST /api/contact
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -121,10 +113,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (message.trim().length < 5) {
-      return NextResponse.json(
-        { error: "Message is too short." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Message is too short." }, { status: 400 });
     }
 
     const submission: ContactSubmission = {
@@ -138,9 +127,22 @@ export async function POST(req: NextRequest) {
       status: "new",
     };
 
-    contactSubmissions.push(submission);
+    // Save to Supabase
+    const { error } = await supabase
+      .from("contact_submissions")
+      .insert({
+        id: submission.id,
+        first_name: submission.firstName,
+        last_name: submission.lastName,
+        email: submission.email,
+        inquiry: submission.inquiry,
+        message: submission.message,
+        status: submission.status,
+      });
 
-    // Fire both emails in parallel (non-blocking — errors are logged, not thrown)
+    if (error) console.error("[Supabase] Insert error:", error);
+
+    // Send emails in parallel
     Promise.all([
       sendEmailViaResend(submission).catch(e => console.error("[Resend] Notification error:", e)),
       sendConfirmationEmail(submission).catch(e => console.error("[Resend] Confirmation error:", e)),
@@ -164,10 +166,19 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// GET /api/contact — admin: list all submissions
+// GET /api/contact — fetch all submissions from Supabase
 export async function GET() {
+  const { data, error } = await supabase
+    .from("contact_submissions")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
   return NextResponse.json({
-    count: contactSubmissions.length,
-    submissions: contactSubmissions,
+    count: data.length,
+    submissions: data,
   });
 }
