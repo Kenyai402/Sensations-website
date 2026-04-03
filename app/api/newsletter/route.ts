@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-// In-memory store — swap with a real DB or Mailchimp/Resend integration in production
-const subscribers: Subscriber[] = [];
+import { supabase } from "@/lib/supabase";
 
 interface Subscriber {
   id: string;
@@ -37,8 +35,13 @@ export async function POST(req: NextRequest) {
 
     const normalised = email.trim().toLowerCase();
 
-    // Check for duplicate
-    const existing = subscribers.find((s) => s.email === normalised);
+    // Check for existing subscriber in Supabase
+    const { data: existing } = await supabase
+      .from("newsletter_subscribers")
+      .select("*")
+      .eq("email", normalised)
+      .single();
+
     if (existing) {
       if (existing.active) {
         return NextResponse.json(
@@ -46,8 +49,13 @@ export async function POST(req: NextRequest) {
           { status: 409 }
         );
       }
+
       // Re-activate if previously unsubscribed
-      existing.active = true;
+      await supabase
+        .from("newsletter_subscribers")
+        .update({ active: true })
+        .eq("email", normalised);
+
       return NextResponse.json(
         { success: true, message: "Welcome back! You've been re-subscribed." },
         { status: 200 }
@@ -61,7 +69,23 @@ export async function POST(req: NextRequest) {
       active: true,
     };
 
-    subscribers.push(subscriber);
+    // Save to Supabase
+    const { error } = await supabase
+      .from("newsletter_subscribers")
+      .insert({
+        id: subscriber.id,
+        email: subscriber.email,
+        subscribed_at: subscriber.subscribedAt,
+        active: subscriber.active,
+      });
+
+    if (error) {
+      console.error("[Supabase] Newsletter insert error:", error);
+      return NextResponse.json(
+        { error: "Something went wrong. Please try again." },
+        { status: 500 }
+      );
+    }
 
     console.log(`[Newsletter] New subscriber: ${subscriber.email} — id: ${subscriber.id}`);
 
@@ -87,22 +111,46 @@ export async function DELETE(req: NextRequest) {
     const { email } = await req.json();
 
     if (!email) {
-      return NextResponse.json({ error: "Email is required." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Email is required." },
+        { status: 400 }
+      );
     }
 
     const normalised = email.trim().toLowerCase();
-    const subscriber = subscribers.find((s) => s.email === normalised);
 
-    if (!subscriber || !subscriber.active) {
+    // Check if subscriber exists
+    const { data: existing } = await supabase
+      .from("newsletter_subscribers")
+      .select("*")
+      .eq("email", normalised)
+      .single();
+
+    if (!existing || !existing.active) {
       return NextResponse.json(
         { error: "Email not found in subscriber list." },
         { status: 404 }
       );
     }
 
-    subscriber.active = false;
+    // Set active to false
+    const { error } = await supabase
+      .from("newsletter_subscribers")
+      .update({ active: false })
+      .eq("email", normalised);
 
-    return NextResponse.json({ success: true, message: "You've been unsubscribed." });
+    if (error) {
+      console.error("[Supabase] Unsubscribe error:", error);
+      return NextResponse.json(
+        { error: "Something went wrong. Please try again." },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: "You've been unsubscribed.",
+    });
   } catch {
     return NextResponse.json(
       { error: "Something went wrong. Please try again." },
@@ -111,8 +159,20 @@ export async function DELETE(req: NextRequest) {
   }
 }
 
-// GET /api/newsletter — subscriber count (admin use)
+// GET /api/newsletter — subscriber count
 export async function GET() {
-  const active = subscribers.filter((s) => s.active).length;
-  return NextResponse.json({ total: subscribers.length, active });
+  const { data, error } = await supabase
+    .from("newsletter_subscribers")
+    .select("*");
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  const active = data.filter((s) => s.active).length;
+
+  return NextResponse.json({
+    total: data.length,
+    active,
+  });
 }

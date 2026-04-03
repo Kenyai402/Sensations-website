@@ -717,7 +717,6 @@ export default function Home() {
                 asChild
                 className="border-muted-teal text-muted-teal hover:text-white hover:bg-muted-teal dark:bg-gray-800 dark:hover:text-white dark:border-soft-lavender dark:soft-lavender/90  dark:hover:bg-gray-700 rounded-full px-8 py-6 text-base font-medium cursor-pointer"
               >
-
                 <a href="#about">Learn More</a>
               </Button>
             </div>
@@ -1307,6 +1306,59 @@ export default function Home() {
         </div>
       </section>
 
+      {/* NEWSLETTER */}
+      <section className="py-20 px-6 lg:px-8 bg-gradient-to-r from-soft-lavender/20 via-cream to-muted-teal/20">
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="text-sm font-medium text-muted-teal mb-4 tracking-wide uppercase">
+            Stay Connected
+          </p>
+          <h2 className="font-heading font-bold text-3xl lg:text-4xl mb-4">
+            Join the Sensations Community
+          </h2>
+          <p className="text-muted-foreground mb-8">
+            Get updates on sessions, events and healing resources. No spam,
+            ever.
+          </p>
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const form = e.currentTarget;
+              const input = form.querySelector("input") as HTMLInputElement;
+              const email = input.value;
+              try {
+                const res = await fetch("/api/newsletter", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ email }),
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error);
+                alert(data.message);
+                input.value = "";
+              } catch (err: unknown) {
+                alert(
+                  err instanceof Error ? err.message : "Something went wrong.",
+                );
+              }
+            }}
+            className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto items-center"
+          >
+            <input
+              type="email"
+              placeholder="Your email address"
+              required
+              className="flex-1 w-full px-6 py-3 rounded-full border border-soft-lavender/30 bg-white text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-soft-lavender"
+            />
+            <Button
+              type="submit"
+              className="bg-soft-lavender hover:bg-soft-lavender/80 text-white rounded-full px-8 py-3 font-medium transition-colors duration-200 whitespace-nowrap"
+            >
+              Subscribe
+            </Button>
+          </form>
+        </div>
+      </section>
+      
       {/* CONTACT  */}
       <section
         id="contact"
