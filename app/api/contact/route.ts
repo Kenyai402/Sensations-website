@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-/* ─────────────────────────────────────────────────────────────────
-   In-memory store (still useful as a backup log)
-   ───────────────────────────────────────────────────────────────── */
+/* In-memory store (still useful as a backup log) */
 interface ContactSubmission {
   id: string;
   firstName: string;
@@ -19,11 +17,9 @@ function generateId() {
   return `contact_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   Resend email sender
+/* Resend email sender
    Set RESEND_API_KEY in your .env.local file.
-   Set CONTACT_EMAIL to the address that receives the messages.
-   ───────────────────────────────────────────────────────────────── */
+   Set CONTACT_EMAIL to the address that receives the messages */
 async function sendEmailViaResend(submission: ContactSubmission) {
   const apiKey = process.env.RESEND_API_KEY;
   const toEmail = process.env.CONTACT_EMAIL || "hello@sensations.ke";
@@ -41,7 +37,7 @@ async function sendEmailViaResend(submission: ContactSubmission) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "The Sensations Website <noreply@sensations.ke>",
+      from: "The Sensations Website <onboarding@resend.dev>",
       to: [toEmail],
       reply_to: submission.email,
       subject: `New message from ${submission.firstName} ${submission.lastName}${submission.inquiry ? ` — ${submission.inquiry}` : ""}`,
@@ -73,9 +69,7 @@ async function sendEmailViaResend(submission: ContactSubmission) {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   Also send a confirmation email back to the user
-   ───────────────────────────────────────────────────────────────── */
+/* Also send a confirmation email back to the user*/
 async function sendConfirmationEmail(submission: ContactSubmission) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return;
@@ -87,7 +81,7 @@ async function sendConfirmationEmail(submission: ContactSubmission) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "The Sensations <hello@sensations.ke>",
+      from: "The Sensations <onboarding@resend.dev>",
       to: [submission.email],
       subject: "We received your message — The Sensations",
       html: `
@@ -106,9 +100,7 @@ async function sendConfirmationEmail(submission: ContactSubmission) {
   });
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   Route handlers
-   ───────────────────────────────────────────────────────────────── */
+/* Route handlers*/
 
 // POST /api/contact — submit a contact message
 export async function POST(req: NextRequest) {

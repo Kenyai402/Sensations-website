@@ -1246,7 +1246,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════ TEAM ══════════════ */}
+      {/* TEAM  */}
       <section
         id="team"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-soft-lavender/10 via-cream to-muted-teal/10"
@@ -1307,7 +1307,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════ CONTACT ══════════════ */}
+      {/* CONTACT  */}
       <section
         id="contact"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-muted-teal/10 via-cream to-soft-lavender/10"
@@ -1444,7 +1444,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════ GET INVOLVED CTA ══════════════ */}
+      {/*  GET INVOLVED CTA  */}
       <section
         id="get-involved"
         className="py-32 px-6 lg:px-8 max-w-4xl mx-auto text-center"
@@ -1470,14 +1470,14 @@ export default function Home() {
           <Button
             variant="outline"
             asChild
-            className="border-muted-teal text-muted-teal hover:bg-muted-teal/5 dark:bg-gray-800 dark:text-white dark:border-gray-800 dark:hover:bg-gray-700 rounded-full px-8 py-6 text-base font-medium cursor-pointer"
+            className="border-muted-teal text-muted-teal hover:bg-muted-teal hover:text-white dark:bg-gray-800 dark:text-white dark:border-gray-800 dark:hover:bg-gray-700 rounded-full px-8 py-6 text-base font-medium cursor-pointer"
           >
             <a href="#events">View 2026 Events</a>
           </Button>
         </div>
       </section>
 
-      {/* ══════════════ JOIN MODAL ══════════════ */}
+      {/* JOIN MODAL  */}
       {joinOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
           <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative max-h-[90vh] overflow-y-auto">
@@ -1684,7 +1684,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* ══════════════ FOOTER ══════════════ */}
+      {/*  FOOTER  */}
       <footer className="border-t border-border bg-gradient-to-br from-soft-lavender/10 via-cream to-muted-teal/10 py-16 px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
