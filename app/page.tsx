@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import NextImage from "next/image";
 import { Button } from "@/components/ui/button";
+import { Instagram, Twitter, Mail } from "lucide-react";
 import {
   Palette,
   Heart,
@@ -37,12 +38,39 @@ export const SITE = {
     "A youth-led art and music therapy initiative in Nairobi, transforming mental health through creative expression.",
   heroStat: "1,000+ Youth Reached",
   heroStatLabel: "Trusted by young people across Nairobi",
-  email: "hello@sensations.ke",
-  location: "Nairobi, Kenya",
-  social: "@thesensations_ke",
+  email: "youthalliancenbokenya@gmail.com",
+  location: "Kariobangi North, Nairobi, Kenya",
+  social: "@sensation9291",
   footerTagline: "Akili Yangu, Raha Yangu.\nMy Mind, My Joy.",
   copyright: "© 2026 The Sensations. All rights reserved.",
 };
+
+const ABOUT = {
+  heading: "About Sensations",
+  body1:
+    "The Sensations is a youth-driven art group that emerged from Youth Alliance Network in 2023. Based in Kariobangi North, Nairobi, we target young people in disadvantaged communities through music therapy, mental health advocacy and the provision of safe spaces for harmonious communities.",
+  body2:
+    "Inspired by the 'Akili Yangu Raha Yangu' project, we believe every young person deserves access to tools for healing and self-expression. Through art therapy sessions, mental health concerts and free music classes every weekend, we are transforming lives one community at a time.",
+};
+
+const VALUES = [
+  {
+    label: "Integrity",
+    desc: "We uphold honesty and transparency in everything we do.",
+  },
+  {
+    label: "Humility",
+    desc: "We serve with a heart that is open, grounded and community-first.",
+  },
+  {
+    label: "Courage",
+    desc: "We boldly create safe spaces for healing and authentic self-expression.",
+  },
+  {
+    label: "Confidence",
+    desc: "We empower young people to believe in their own voice and worth.",
+  },
+];
 
 const PROGRAMS = [
   {
@@ -73,18 +101,13 @@ const PROGRAMS = [
 ];
 
 const TEAM = [
-  {
-    initials: "AO",
-    name: "Anton Ombara",
-    role: "Founder, Music & Art Therapist",
-  },
-  { initials: "D", name: "Diana", role: "Music Therapy Lead" },
-  {
-    initials: "KN",
-    name: "Keren Nyambura",
-    role: "Website Developer & Manager",
-  },
+  { initials: "AO", name: "Anton Ombara", role: "Founder & CEO" },
+  { initials: "BO", name: "Bonface Odianga", role: "Financial Manager" },
+  { initials: "DA", name: "Diana Atieno", role: "Director of Communications" },
+  { initials: "BO", name: "Belvine Otieno", role: "Head of Operations" },
+  { initials: "KN", name: "Keren Nyambura", role: "Web Designer" },
   { initials: "CP", name: "Celestine Pollack", role: "Social Media Manager" },
+  { initials: "CO", name: "Clinton Otieno", role: "Head of Talent Department" },
 ];
 
 const TESTIMONIALS = [
@@ -684,7 +707,7 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* ══════════════ HERO ══════════════ */}
+      {/*  HERO */}
       <section className="pt-32 pb-20 px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Text */}
@@ -822,7 +845,7 @@ export default function Home() {
               <p className="text-lg text-muted-foreground leading-relaxed mb-6">
                 {ABOUT.body1}
               </p>
-              <p className="text-muted-foreground leading-relaxed mb-8">
+              <p className="text-muted-foreground leading-relaxed mb-8 italic">
                 {ABOUT.body2}
               </p>
               <div className="grid grid-cols-2 gap-5">
@@ -1179,7 +1202,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════ TESTIMONIALS ══════════════ */}
+      {/*  TESTIMONIALS  */}
       <section
         id="testimonials"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-muted-teal/10 via-cream to-soft-lavender/10 max-w-7xl mx-auto"
@@ -1269,7 +1292,10 @@ export default function Home() {
                 "from-violet-400 to-fuchsia-400",
                 "from-teal-400 to-violet-400",
                 "from-fuchsia-400 to-teal-400",
-                "from-violet-400 to-teal-400",
+                "from-violet-700 to-teal-400",
+                "from-coral-300 to-fuchsia-400",
+                "from-fuchsia-400 to-teal-400",
+                "from-violet-400 to-teal-800",
               ];
               return (
                 <div key={name} className="text-center group">
@@ -1289,7 +1315,7 @@ export default function Home() {
             })}
           </div>
           <div className="bg-gradient-to-r from-violet-50 to-teal-50 rounded-3xl p-8 text-center border border-border">
-            <h3 className="font-heading font-bold text-xl mb-2">
+            <h3 className="font-heading font-bold text-xl mb-2 dark:text-black">
               Want to Volunteer or Collaborate?
             </h3>
             <p className="text-muted-foreground mb-6 max-w-lg mx-auto text-sm">
@@ -1358,7 +1384,7 @@ export default function Home() {
           </form>
         </div>
       </section>
-      
+
       {/* CONTACT  */}
       <section
         id="contact"
@@ -1474,7 +1500,7 @@ export default function Home() {
                 Icon: Users,
                 title: "Follow Us",
                 detail: SITE.social,
-                href: "#",
+                href: "https://www.instagram.com/sensation9291",
               },
             ].map(({ Icon, title, detail, href }) => (
               <div key={title} className="text-center">
@@ -1522,7 +1548,7 @@ export default function Home() {
           <Button
             variant="outline"
             asChild
-            className="border-muted-teal text-muted-teal hover:bg-muted-teal hover:text-white dark:bg-gray-800 dark:text-white dark:border-gray-800 dark:hover:bg-gray-700 rounded-full px-8 py-6 text-base font-medium cursor-pointer"
+            className="border-muted-teal text-muted-teal hover:bg-muted-teal hover:text-white dark:bg-gray-800 dark:text-white dark:border-soft-lavender dark:hover:bg-gray-700 rounded-full px-8 py-6 text-base font-medium cursor-pointer"
           >
             <a href="#events">View 2026 Events</a>
           </Button>
@@ -1739,7 +1765,7 @@ export default function Home() {
       {/*  FOOTER  */}
       <footer className="border-t border-border bg-gradient-to-br from-soft-lavender/10 via-cream to-muted-teal/10 py-16 px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+          <div className="grid grid-cols-4 md:grid-cols-4 gap-12 mb-12">
             <div>
               <p className="font-heading font-bold text-lg mb-2">{SITE.name}</p>
               <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
@@ -1763,28 +1789,49 @@ export default function Home() {
             </div>
             <div>
               <p className="text-sm font-medium font-heading mb-4">Connect</p>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-3 text-sm text-muted-foreground">
                 <li>
                   <a
-                    href="#"
-                    className="hover:text-soft-lavender transition cursor-pointer"
+                    href="https://www.instagram.com/sensation9291"
+                    className="flex items-center gap-2 hover:text-soft-lavender transition cursor-pointer group"
                   >
+                    <Instagram
+                      size={18}
+                      className="group-hover:scale-110 transition-transform"
+                    />
                     Instagram
                   </a>
                 </li>
+
                 <li>
                   <a
-                    href="#"
-                    className="hover:text-soft-lavender transition cursor-pointer"
+                    href="https://www.tiktok.com/@the.sensation0"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 hover:text-soft-lavender transition cursor-pointer group"
                   >
-                    Twitter / X
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z" />
+                    </svg>
+                    TikTok
                   </a>
                 </li>
+
                 <li>
                   <a
                     href={`mailto:${SITE.email}`}
-                    className="hover:text-soft-lavender transition cursor-pointer"
+                    className="flex items-center gap-2 hover:text-soft-lavender transition cursor-pointer"
                   >
+                    <Mail
+                      size={18}
+                      className="group-hover:scale-110 transition-transform"
+                    />
                     Email Us
                   </a>
                 </li>
@@ -1818,19 +1865,3 @@ export default function Home() {
     </div>
   );
 }
-
-// Adding missing constants
-const ABOUT = {
-  heading: "About Us",
-  body1: "We are a team of passionate individuals.",
-  body2: "Our mission is to deliver excellence.",
-};
-
-const VALUES = [
-  { label: "Integrity", desc: "We uphold the highest standards." },
-  { label: "Innovation", desc: "We embrace creativity and change." },
-  {
-    label: "Excellence",
-    desc: "We strive for perfection in everything we do.",
-  },
-];

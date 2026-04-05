@@ -33,7 +33,7 @@ async function sendEmailViaResend(submission: ContactSubmission) {
     },
     body: JSON.stringify({
       from: "The Sensations Website <onboarding@resend.dev>",
-      to: [toEmail],
+      to: ["tonnyclinton254@gmail.com"],
       reply_to: submission.email,
       subject: `New message from ${submission.firstName} ${submission.lastName}${submission.inquiry ? ` — ${submission.inquiry}` : ""}`,
       html: `
@@ -65,33 +65,43 @@ async function sendEmailViaResend(submission: ContactSubmission) {
 }
 
 async function sendConfirmationEmail(submission: ContactSubmission) {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) return;
+ // TODO: Re-enable once sensations.ke domain is verified on Resend
+  // Steps to re-enable:
+  // 1. Verify sensations.ke at resend.com/domains
+  // 2. Change 'from' to "The Sensations <hello@sensations.ke>"
+  // 3. Remove this return statement
+  // 4. Push and redeploy to Vercel
 
-  await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: "The Sensations <onboarding@resend.dev>",
-      to: [submission.email],
-      subject: "We received your message — The Sensations",
-      html: `
-        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#f9f8ff;border-radius:16px;">
-          <h2 style="color:#6d4fc9;">Thank you, ${submission.firstName}! 🎨🎵</h2>
-          <p style="color:#555;line-height:1.7;">We've received your message and our team will get back to you within <strong>2–4 hours</strong> during working hours (Mon–Sat, 9am–6pm EAT).</p>
-          <p style="color:#555;line-height:1.7;">In the meantime, follow us on social media to stay connected with the Sensations community.</p>
-          <div style="text-align:center;margin:32px 0;">
-            <a href="https://sensations-website.vercel.app" style="background:#6d4fc9;color:white;padding:12px 28px;border-radius:999px;text-decoration:none;font-weight:600;font-size:14px;">Visit Our Website</a>
-          </div>
-          <hr style="border:none;border-top:1px solid #e8e0f7;margin:24px 0;" />
-          <p style="font-size:12px;color:#aaa;text-align:center;">The Sensations — Akili Yangu Raha Yangu<br/>Nairobi, Kenya · hello@sensations.ke</p>
-        </div>
-      `,
-    }),
-  });
+  return; // ← remove this line once domain is verified
+
+  
+  // const apiKey = process.env.RESEND_API_KEY;
+  // if (!apiKey) return;
+
+  // await fetch("https://api.resend.com/emails", {
+  //   method: "POST",
+  //   headers: {
+  //     Authorization: `Bearer ${apiKey}`,
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({
+  //     from: "The Sensations <onboarding@resend.dev>",
+  //     to: [submission.email],
+  //     subject: "We received your message — The Sensations",
+  //     html: `
+  //       <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#f9f8ff;border-radius:16px;">
+  //         <h2 style="color:#6d4fc9;">Thank you, ${submission.firstName}! 🎨🎵</h2>
+  //         <p style="color:#555;line-height:1.7;">We've received your message and our team will get back to you within <strong>2–4 hours</strong> during working hours (Mon–Sat, 9am–6pm EAT).</p>
+  //         <p style="color:#555;line-height:1.7;">In the meantime, follow us on social media to stay connected with the Sensations community.</p>
+  //         <div style="text-align:center;margin:32px 0;">
+  //           <a href="https://sensations-website.vercel.app" style="background:#6d4fc9;color:white;padding:12px 28px;border-radius:999px;text-decoration:none;font-weight:600;font-size:14px;">Visit Our Website</a>
+  //         </div>
+  //         <hr style="border:none;border-top:1px solid #e8e0f7;margin:24px 0;" />
+  //         <p style="font-size:12px;color:#aaa;text-align:center;">The Sensations — Akili Yangu Raha Yangu<br/>Nairobi, Kenya · hello@sensations.ke</p>
+  //       </div>
+  //     `,
+  //   }),
+  // });
 }
 
 // POST /api/contact
