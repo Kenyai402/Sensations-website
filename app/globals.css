@@ -309,3 +309,33 @@
     animation: fadeIn 1s ease-out;
   }
 }
+@keyframes scrollUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes scrollDown {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-scroll-up {
+  animation: scrollUp 25s linear infinite;
+}
+
+.animate-scroll-up-slow {
+  animation: scrollUp 35s linear infinite;
+}
+
+.animate-scroll-down {
+  animation: scrollDown 30s linear infinite;
+}
+
