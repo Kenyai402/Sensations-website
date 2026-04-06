@@ -152,11 +152,15 @@ export async function POST(req: NextRequest) {
 
     if (error) console.error("[Supabase] Insert error:", error);
 
-    // Send emails in parallel
-    Promise.all([
-      sendEmailViaResend(submission).catch(e => console.error("[Resend] Notification error:", e)),
-      sendConfirmationEmail(submission).catch(e => console.error("[Resend] Confirmation error:", e)),
-    ]);
+console.log(`[DEBUG] About to send to tonnyclinton254@gmail.com for submission ${submission.id}`);
+console.log(`[DEBUG] RESEND_API_KEY ${process.env.RESEND_API_KEY ? 'PRESENT' : 'MISSING'}`);
+
+// Send emails in parallel
+Promise.all([
+  sendEmailViaResend(submission).catch(e => console.error("[Resend] Notification error:", e)),
+  sendConfirmationEmail(submission).catch(e => console.error("[Resend] Confirmation error:", e)),
+]);
+
 
     console.log(`[Contact] New submission #${submission.id} from ${submission.email}`);
 

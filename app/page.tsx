@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import NextImage from "next/image";
 import { Button } from "@/components/ui/button";
 import { Instagram, Twitter, Mail } from "lucide-react";
+import Link from "next/link";
+
 import {
   Palette,
   Heart,
@@ -108,6 +110,12 @@ const TEAM = [
   { initials: "KN", name: "Keren Nyambura", role: "Web Designer" },
   { initials: "CP", name: "Celestine Pollack", role: "Social Media Manager" },
   { initials: "CO", name: "Clinton Otieno", role: "Head of Talent Department" },
+];
+
+const aboutCaptions = [
+  "Our journey began with a simple idea: every young person deserves access to tools for healing and self-expression.",
+  "Through art therapy sessions, we provide a safe space for young people to explore their emotions and tell their stories.",
+  "Our community-centred approach creates space for authentic transformation and lasting change.",
 ];
 
 const TESTIMONIALS = [
@@ -398,6 +406,99 @@ export default function Home() {
     type: "success" | "error";
     message: string;
   } | null>(null);
+
+  // About slideshow
+  const [currentAboutImage, setCurrentAboutImage] = useState(0);
+  const aboutImages = [
+    "/art-therapy-session.jpg",
+    "/music-therapy.jpg",
+    "/community-healing.jpg",
+    "/community-circle.jpg",
+  ];
+  const aboutCaptions = [
+    "Art therapy sessions help unlock emotion through creative expression",
+    "Music therapy uses melody and beat to process what words cannot reach",
+    "Community healing circles harness the power of collective presence",
+    "Together we create safe spaces for authentic transformation",
+  ];
+
+  // Gallery slideshow
+  const [currentGalleryImage, setCurrentGalleryImage] = useState(0);
+  const galleryImages = [
+    {
+      src: "/gallery1.jpg",
+      cat: "Community",
+      alt: "Healing",
+      title: "Collective Healing",
+      description:
+        "Group therapy sessions create safe spaces where young people share experiences and support each other's mental health journey.",
+    },
+    {
+      src: "/gallery3.jpg",
+      cat: "Art Therapy",
+      alt: "Healing art",
+      title: "Healing Through Art",
+      description:
+        "Participants express emotions through painting, drawing, and sculpting, discovering new ways to process trauma and stress.",
+    },
+    {
+      src: "/gallery6.jpg",
+      cat: "Community",
+      alt: "Healing",
+      title: "Community Healing Circle",
+      description:
+        "Weekly gatherings where young people come together to share, listen, and grow in a supportive environment.",
+    },
+    {
+      src: "/gallery10.jpeg",
+      cat: "Art Therapy",
+      alt: "Creative expression",
+      title: "Creative Expression Workshop",
+      description:
+        "Guided sessions that help unlock emotions through color, form, and texture in a judgment-free space.",
+    },
+    {
+      src: "/gallery15.jpeg",
+      cat: "Music Therapy",
+      alt: "Therapy",
+      title: "Sound & Rhythm Healing",
+      description:
+        "Music therapy sessions use drumming, singing, and songwriting to process emotions that words cannot reach.",
+    },
+    {
+      src: "/gallery21.jpeg",
+      cat: "Team",
+      alt: "Community",
+      title: "Our Dedicated Team",
+      description:
+        "A passionate group of therapists, artists, and musicians committed to youth mental wellness.",
+    },
+  ];
+  useEffect(() => {
+    const t = setInterval(
+      () => setCurrentGalleryImage((p) => (p + 1) % galleryImages.length),
+      4000,
+    );
+    return () => clearInterval(t);
+  }, []);
+
+  const [currentImpactImage, setCurrentImpactImage] = useState(0);
+  const impactImages = [
+    "/gallery4.jpg",
+    "/gallery5.jpg",
+    "/gallery8.jpg",
+    "/gallery20.jpeg",
+    "/gallery25.jpeg",
+    "/gallery35.jpeg",
+  ];
+
+  useEffect(() => {
+    const t = setInterval(
+      () => setCurrentImpactImage((p) => (p + 1) % impactImages.length),
+      3000,
+    );
+    return () => clearInterval(t);
+  }, []);
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -757,13 +858,14 @@ export default function Home() {
           <div className="relative h-96 lg:h-[520px]">
             {/* Central pulse — no box, just the heart */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              {/* Hero section - update the rotating border section */}
               <div className="relative flex items-center justify-center">
                 <div
-                  className="absolute w-52 h-52 rounded-full border-2 border-dashed border-soft-lavender/30 animate-spin"
+                  className="absolute w-52 h-52 rounded-full border-2 border-dashed border-soft-lavender/30 dark:border-muted-teal animate-spin dark:bg-dark-slate/20 dark:backdrop-blur-sm"
                   style={{ animationDuration: "20s" }}
                 />
                 <div
-                  className="absolute w-36 h-36 rounded-full border-2 border-dashed border-muted-teal/30 animate-spin"
+                  className="absolute w-36 h-36 rounded-full border-2 border-dashed border-muted-teal/30 dark:border-soft-lavender/30 animate-spin dark:bg-dark-slate/20 dark:backdrop-blur-sm"
                   style={{
                     animationDuration: "15s",
                     animationDirection: "reverse",
@@ -828,7 +930,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+      {/* About */}
       <section
         id="about"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-soft-lavender/10 via-cream to-muted-teal/10"
@@ -876,29 +978,142 @@ export default function Home() {
                 )}
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { src: "/art-therapy-session.jpg", alt: "Art therapy" },
-                { src: "/music-therapy.jpg", alt: "Music therapy", mt: true },
-                { src: "/community-healing.jpg", alt: "Community healing" },
-                {
-                  src: "/community-circle.jpg",
-                  alt: "Community circle",
-                  mt: true,
-                },
-              ].map(({ src, alt, mt }, i) => (
-                <div
-                  key={i}
-                  className={`relative h-52 rounded-2xl overflow-hidden${mt ? " mt-8" : ""}`}
-                >
-                  <Image src={src} alt={alt} fill className="object-cover" />
+            {/* About section - replace the image grid with this slideshow */}
+            <div className="relative">
+              <div className="relative h-[500px] rounded-2xl overflow-hidden">
+                <Image
+                  src={aboutImages[currentAboutImage]}
+                  alt="About Sensations"
+                  fill
+                  className="object-cover transition-opacity duration-500"
+                />
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-dark-slate/50 to-transparent" />
+
+                {/* Caption */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-dark-slate/80 to-transparent">
+                  <p className="text-white text-sm font-medium">
+                    {aboutCaptions[currentAboutImage]}
+                  </p>
                 </div>
-              ))}
+
+                {/* Navigation arrows */}
+                <button
+                  onClick={() =>
+                    setCurrentAboutImage((prev) =>
+                      prev === 0 ? aboutImages.length - 1 : prev - 1,
+                    )
+                  }
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white flex items-center justify-center transition cursor-pointer"
+                >
+                  <ChevronLeft className="w-5 h-5 text-dark-slate" />
+                </button>
+                <button
+                  onClick={() =>
+                    setCurrentAboutImage(
+                      (prev) => (prev + 1) % aboutImages.length,
+                    )
+                  }
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white flex items-center justify-center transition cursor-pointer"
+                >
+                  <ChevronRight className="w-5 h-5 text-dark-slate" />
+                </button>
+
+                {/* Dots indicator */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                  {aboutImages.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentAboutImage(idx)}
+                      className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
+                        idx === currentAboutImage
+                          ? "w-6 bg-white"
+                          : "bg-white/50"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Our Vision Section*/}
+      <section className="py-32 px-6 lg:px-8 bg-gradient-to-br from-muted-teal/5 via-cream to-soft-lavender/5">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="order-2 lg:order-1">
+              <div className="relative">
+                <div className="absolute -top-6 -left-6 w-24 h-24 rounded-full bg-soft-lavender/10 blur-2xl" />
+                <div className="relative bg-gradient-to-br from-soft-lavender/20 to-muted-teal/20 rounded-3xl p-8 lg:p-12 border border-soft-lavender/20">
+                  <div className="w-16 h-16 rounded-2xl bg-soft-lavender/20 flex items-center justify-center mb-6">
+                    <Eye className="w-8 h-8 text-soft-lavender" />
+                  </div>
+                  <h3 className="font-heading font-bold text-2xl lg:text-3xl mb-4 text-balance">
+                    Our Vision
+                  </h3>
+                  <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                    We envision a Nairobi where every young person, regardless
+                    of their background or circumstances, has access to mental
+                    health support through creative expression.
+                  </p>
+                  <p className="text-muted-foreground leading-relaxed">
+                    A future where art and music therapy are recognized as
+                    essential tools for healing, where communities come together
+                    to break the stigma around mental health, and where every
+                    young person can say with confidence:{" "}
+                    <span className="font-medium text-soft-lavender">
+                      "Akili Yangu, Raha Yangu"
+                    </span>{" "}
+                    — My Mind, My Joy.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="order-1 lg:order-2">
+              <p className="text-sm font-medium text-muted-teal mb-4 tracking-wide uppercase">
+                Looking Ahead
+              </p>
+              <h2 className="font-heading font-bold text-4xl lg:text-5xl mb-6 text-balance">
+                Building a Future of Healing & Hope
+              </h2>
+              <div className="space-y-4">
+                {[
+                  {
+                    icon: Users,
+                    text: "Reach 10,000+ youth across Nairobi by 2028",
+                  },
+                  {
+                    icon: Music2,
+                    text: "Establish permanent art and music therapy centers",
+                  },
+                  {
+                    icon: Heart,
+                    text: "Train 100+ community mental health facilitators",
+                  },
+                  {
+                    icon: Calendar,
+                    text: "Host annual mental health awareness festivals",
+                  },
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="flex items-start gap-4 p-4 rounded-xl bg-white/50 backdrop-blur-sm border border-border hover:shadow-md transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-soft-lavender/20 flex items-center justify-center shrink-0">
+                      <item.icon className="w-5 h-5 text-soft-lavender" />
+                    </div>
+                    <p className="text-muted-foreground">{item.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services */}
       <section
         id="what-we-do"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-muted-teal/10 via-cream to-soft-lavender/10"
@@ -959,7 +1174,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+      {/* Events */}
       <section
         id="events"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-soft-lavender/10 via-cream to-muted-teal/10"
@@ -1064,7 +1279,7 @@ export default function Home() {
           )}
 
           <div className="mt-12 bg-gradient-to-r from-violet-50 to-teal-50 rounded-2xl p-6 text-center border border-border">
-            <p className="text-sm text-muted-foreground mb-1">
+            <p className="text-sm text-muted-foreground mb-1 dark:text-muted-foreground/20">
               Total events in 2026
             </p>
             <p className="font-heading font-bold text-3xl text-soft-lavender">
@@ -1076,19 +1291,38 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+      {/* Impact */}
       <section
         id="impact"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-muted-teal/10 via-cream to-soft-lavender/10"
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="relative h-96 lg:h-full min-h-96 rounded-3xl overflow-hidden order-2 lg:order-1">
-            <Image
-              src="/DSC_0304.jpg"
-              alt="Art therapy in progress"
-              fill
-              className="object-cover"
-            />
+            {impactImages.map((src, idx) => (
+              <Image
+                key={src}
+                src={src}
+                alt="Art therapy in progress"
+                fill
+                className={`object-cover transition-opacity duration-1000 ${
+                  idx === currentImpactImage ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            ))}
+            {/* Dot indicators */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+              {impactImages.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentImpactImage(idx)}
+                  className={`rounded-full transition-all cursor-pointer ${
+                    idx === currentImpactImage
+                      ? "w-6 h-2 bg-white"
+                      : "w-2 h-2 bg-white/50"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
           <div className="order-1 lg:order-2">
             <p className="text-sm font-medium text-muted-teal mb-4 tracking-wide uppercase">
@@ -1131,6 +1365,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* gallery */}
       <section
         id="gallery"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-soft-lavender/10 via-cream to-muted-teal/10"
@@ -1148,56 +1383,83 @@ export default function Home() {
               community sessions.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              // { src: '/art-therapy-session.jpg', alt: 'Art therapy',  cat: 'Art',       title: 'Creative Expression' },
-              {
-                src: "/DSC_0166.jpg",
-                alt: "Music",
-                cat: "Music",
-                title: "Music Sessions",
-              },
-              {
-                src: "/community-circle.jpg",
-                alt: "Community",
-                cat: "Community",
-                title: "Community Healing",
-              },
-              {
-                src: "/DSC_0374.jpg",
-                alt: "Healing art",
-                cat: "Art",
-                title: "Healing Through Art",
-              },
-              {
-                src: "/music-therapy.jpg",
-                alt: "Therapy",
-                cat: "Music",
-                title: "Sound & Rhythm",
-              },
-              {
-                src: "/DSC_0154.jpg",
-                alt: "Healing",
-                cat: "Community",
-                title: "Collective Healing",
-              },
-            ].map((item, i) => (
-              <div key={i} className="group cursor-pointer">
-                <div className="relative h-64 rounded-3xl overflow-hidden mb-4 bg-muted">
-                  <Image
-                    src={item.src}
-                    alt={item.alt}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark-slate/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          {/* Gallery Slideshow */}
+          <div className="relative rounded-3xl overflow-hidden h-[500px]">
+            {galleryImages.map((item, idx) => (
+              <div
+                key={item.src}
+                className={`absolute inset-0 transition-opacity duration-700 ${
+                  idx === currentGalleryImage ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                <Image
+                  src={item.src}
+                  alt={item.alt}
+                  fill
+                  className="object-cover"
+                />
+                {/* Dark overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-dark-slate/80 via-dark-slate/20 to-transparent" />
+                {/* Text overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-8">
+                  <span className="inline-block px-3 py-1 bg-soft-lavender/90 text-white text-xs font-medium rounded-full mb-3">
+                    {item.cat}
+                  </span>
+                  <h3 className="font-heading font-bold text-2xl text-white mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-white/80 text-sm leading-relaxed max-w-lg">
+                    {item.description}
+                  </p>
                 </div>
-                <span className="inline-block px-3 py-1 bg-soft-lavender/15 text-soft-lavender text-xs font-medium rounded-full mb-2">
-                  {item.cat}
-                </span>
-                <h3 className="font-heading font-bold text-lg">{item.title}</h3>
               </div>
             ))}
+
+            {/* Navigation arrows */}
+            <button
+              onClick={() =>
+                setCurrentGalleryImage((p) =>
+                  p === 0 ? galleryImages.length - 1 : p - 1,
+                )
+              }
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-sm flex items-center justify-center transition cursor-pointer z-10"
+            >
+              <ChevronLeft className="w-5 h-5 text-white" />
+            </button>
+            <button
+              onClick={() =>
+                setCurrentGalleryImage((p) => (p + 1) % galleryImages.length)
+              }
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-sm flex items-center justify-center transition cursor-pointer z-10"
+            >
+              <ChevronRight className="w-5 h-5 text-white" />
+            </button>
+
+            {/* Dot indicators */}
+            <div className="absolute top-4 right-4 flex gap-2 z-10">
+              {galleryImages.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentGalleryImage(idx)}
+                  className={`rounded-full transition-all cursor-pointer ${
+                    idx === currentGalleryImage
+                      ? "w-6 h-2 bg-white"
+                      : "w-2 h-2 bg-white/50"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* View Full Gallery Button */}
+          <div className="text-center mt-12">
+            <Link
+              href="/gallery"
+              className="inline-flex items-center gap-2 bg-soft-lavender hover:bg-soft-lavender/90 text-white rounded-full px-8 py-4 font-medium transition-colors"
+            >
+              View Full Gallery
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
@@ -1205,76 +1467,79 @@ export default function Home() {
       {/*  TESTIMONIALS  */}
       <section
         id="testimonials"
-        className="py-32 px-6 lg:px-8 bg-gradient-to-br from-muted-teal/10 via-cream to-soft-lavender/10 max-w-7xl mx-auto"
+        className="py-32 px-6 lg:px-8 bg-gradient-to-br from-muted-teal/10 via-cream to-soft-lavender/10 "
       >
-        <div className="text-center mb-20">
-          <p className="text-sm font-medium text-muted-teal mb-4 tracking-wide uppercase">
-            Voices of Transformation
-          </p>
-          <h2 className="font-heading font-bold text-4xl lg:text-5xl text-balance mb-6">
-            Hear From Our Community
-          </h2>
-        </div>
-        <div className="bg-soft-lavender/10 rounded-3xl p-12 mb-8 min-h-[320px] flex items-center justify-center">
-          <div className="text-center space-y-6 max-w-3xl">
-            <div className="flex justify-center">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-soft-lavender to-muted-teal flex items-center justify-center">
-                <span className="text-2xl font-heading font-bold text-white">
-                  {TESTIMONIALS[currentTestimonial].initial}
-                </span>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-20">
+            <p className="text-sm font-medium text-muted-teal mb-4 tracking-wide uppercase">
+              Voices of Transformation
+            </p>
+            <h2 className="font-heading font-bold text-4xl lg:text-5xl text-balance mb-6">
+              Hear From Our Community
+            </h2>
+          </div>
+          <div className="bg-soft-lavender/10 rounded-3xl p-12 mb-8 min-h-[320px] flex items-center justify-center">
+            <div className="text-center space-y-6 max-w-3xl">
+              <div className="flex justify-center">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-soft-lavender to-muted-teal flex items-center justify-center">
+                  <span className="text-2xl font-heading font-bold text-white">
+                    {TESTIMONIALS[currentTestimonial].initial}
+                  </span>
+                </div>
+              </div>
+              <blockquote className="text-xl lg:text-2xl font-medium text-dark-slate leading-relaxed">
+                "{TESTIMONIALS[currentTestimonial].content}"
+              </blockquote>
+              <div>
+                <p className="font-heading font-bold text-lg">
+                  {TESTIMONIALS[currentTestimonial].name}
+                </p>
+                <p className="text-muted-foreground text-sm">
+                  {TESTIMONIALS[currentTestimonial].role}
+                </p>
               </div>
             </div>
-            <blockquote className="text-xl lg:text-2xl font-medium text-dark-slate leading-relaxed">
-              "{TESTIMONIALS[currentTestimonial].content}"
-            </blockquote>
-            <div>
-              <p className="font-heading font-bold text-lg">
-                {TESTIMONIALS[currentTestimonial].name}
-              </p>
-              <p className="text-muted-foreground text-sm">
-                {TESTIMONIALS[currentTestimonial].role}
-              </p>
+          </div>
+          <div className="flex items-center justify-center gap-4">
+            <button
+              onClick={() =>
+                setCurrentTestimonial((p) =>
+                  p === 0 ? TESTIMONIALS.length - 1 : p - 1,
+                )
+              }
+              className="p-2 rounded-full border border-soft-lavender text-soft-lavender hover:bg-soft-lavender/10 transition cursor-pointer"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <div className="flex gap-2">
+              {TESTIMONIALS.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentTestimonial(i)}
+                  className={`rounded-full transition-all duration-500 cursor-pointer ${i === currentTestimonial ? "bg-soft-lavender w-8 h-2" : "bg-muted w-2 h-2"}`}
+                />
+              ))}
             </div>
+            <button
+              onClick={() =>
+                setCurrentTestimonial((p) => (p + 1) % TESTIMONIALS.length)
+              }
+              className="p-2 rounded-full border border-soft-lavender text-soft-lavender hover:bg-soft-lavender/10 transition cursor-pointer"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
           </div>
-        </div>
-        <div className="flex items-center justify-center gap-4">
-          <button
-            onClick={() =>
-              setCurrentTestimonial((p) =>
-                p === 0 ? TESTIMONIALS.length - 1 : p - 1,
-              )
-            }
-            className="p-2 rounded-full border border-soft-lavender text-soft-lavender hover:bg-soft-lavender/10 transition cursor-pointer"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-          <div className="flex gap-2">
-            {TESTIMONIALS.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrentTestimonial(i)}
-                className={`rounded-full transition-all duration-500 cursor-pointer ${i === currentTestimonial ? "bg-soft-lavender w-8 h-2" : "bg-muted w-2 h-2"}`}
-              />
-            ))}
-          </div>
-          <button
-            onClick={() =>
-              setCurrentTestimonial((p) => (p + 1) % TESTIMONIALS.length)
-            }
-            className="p-2 rounded-full border border-soft-lavender text-soft-lavender hover:bg-soft-lavender/10 transition cursor-pointer"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
         </div>
       </section>
 
       {/* TEAM  */}
+      {/* TEAM - Custom layout: 4 on top, 3 centered on bottom */}
       <section
         id="team"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-soft-lavender/10 via-cream to-muted-teal/10"
       >
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
             <p className="text-sm font-medium text-muted-teal mb-4 tracking-wide uppercase">
               The People Behind It
             </p>
@@ -1286,13 +1551,38 @@ export default function Home() {
               community builders dedicated to youth healing.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            {TEAM.map(({ initials, name, role }, i) => {
+
+          {/* Top row - 4 members */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+            {TEAM.slice(0, 4).map(({ initials, name, role }, i) => {
               const gradients = [
                 "from-violet-400 to-fuchsia-400",
                 "from-teal-400 to-violet-400",
                 "from-fuchsia-400 to-teal-400",
                 "from-violet-700 to-teal-400",
+              ];
+              return (
+                <div key={name} className="text-center group">
+                  <div
+                    className={`w-28 h-28 rounded-3xl bg-gradient-to-br ${gradients[i]} flex items-center justify-center mx-auto mb-5 shadow-md group-hover:scale-105 transition-transform`}
+                  >
+                    <span className="text-3xl font-heading font-bold text-white">
+                      {initials}
+                    </span>
+                  </div>
+                  <h3 className="font-heading font-bold text-lg mb-1">
+                    {name}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">{role}</p>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Bottom row - 3 members centered with custom grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
+            {TEAM.slice(4, 7).map(({ initials, name, role }, i) => {
+              const gradients = [
                 "from-coral-300 to-fuchsia-400",
                 "from-fuchsia-400 to-teal-400",
                 "from-violet-400 to-teal-800",
@@ -1314,7 +1604,8 @@ export default function Home() {
               );
             })}
           </div>
-          <div className="bg-gradient-to-r from-violet-50 to-teal-50 rounded-3xl p-8 text-center border border-border">
+
+          <div className="bg-gradient-to-r from-violet-50 to-teal-50 rounded-3xl p-8 text-center border border-border mt-16">
             <h3 className="font-heading font-bold text-xl mb-2 dark:text-black">
               Want to Volunteer or Collaborate?
             </h3>
@@ -1763,15 +2054,19 @@ export default function Home() {
       )}
 
       {/*  FOOTER  */}
+      {/* FOOTER - Added Services column */}
       <footer className="border-t border-border bg-gradient-to-br from-soft-lavender/10 via-cream to-muted-teal/10 py-16 px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-4 md:grid-cols-4 gap-12 mb-12">
-            <div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 mb-12">
+            {/* Brand Column */}
+            <div className="lg:col-span-1">
               <p className="font-heading font-bold text-lg mb-2">{SITE.name}</p>
               <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
                 {SITE.footerTagline}
               </p>
             </div>
+
+            {/* Navigation Column */}
             <div>
               <p className="text-sm font-medium font-heading mb-4">Navigate</p>
               <ul className="space-y-2 text-sm text-muted-foreground">
@@ -1787,6 +2082,63 @@ export default function Home() {
                 ))}
               </ul>
             </div>
+
+            {/* Services Column - NEW */}
+            <div>
+              <p className="text-sm font-medium font-heading mb-4">Services</p>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>
+                  <a
+                    href="#what-we-do"
+                    className="hover:text-soft-lavender transition cursor-pointer"
+                  >
+                    Art Therapy
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#what-we-do"
+                    className="hover:text-soft-lavender transition cursor-pointer"
+                  >
+                    Music Therapy
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#what-we-do"
+                    className="hover:text-soft-lavender transition cursor-pointer"
+                  >
+                    Group Healing Circles
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#what-we-do"
+                    className="hover:text-soft-lavender transition cursor-pointer"
+                  >
+                    Mental Health Workshops
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#what-we-do"
+                    className="hover:text-soft-lavender transition cursor-pointer"
+                  >
+                    Community Events
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#what-we-do"
+                    className="hover:text-soft-lavender transition cursor-pointer"
+                  >
+                    Youth Counseling
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Connect Column */}
             <div>
               <p className="text-sm font-medium font-heading mb-4">Connect</p>
               <ul className="space-y-3 text-sm text-muted-foreground">
@@ -1802,7 +2154,6 @@ export default function Home() {
                     Instagram
                   </a>
                 </li>
-
                 <li>
                   <a
                     href="https://www.tiktok.com/@the.sensation0"
@@ -1822,7 +2173,6 @@ export default function Home() {
                     TikTok
                   </a>
                 </li>
-
                 <li>
                   <a
                     href={`mailto:${SITE.email}`}
@@ -1837,6 +2187,8 @@ export default function Home() {
                 </li>
               </ul>
             </div>
+
+            {/* Location & CTA Column */}
             <div>
               <p className="text-sm font-medium font-heading mb-4">Based in</p>
               <p className="text-sm text-muted-foreground mb-4">
@@ -1855,7 +2207,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-
       <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
