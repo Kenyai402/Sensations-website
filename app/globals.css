@@ -145,11 +145,7 @@
   }
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   DARK MODE — nuclear override
-   page.tsx uses hardcoded bg classes that don't read CSS variables.
-   Forcefully reset every background and text in dark mode here.
-   ───────────────────────────────────────────────────────────────── */
+/* DARK MODE OVERRIDES*/
 .dark {
   color-scheme: dark;
 }
@@ -338,3 +334,5 @@
 .animate-scroll-down {
   animation: scrollDown 30s linear infinite;
 }
+
+
