@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import NextImage from "next/image";
 import { Button } from "@/components/ui/button";
-import { Instagram, Twitter, Mail } from "lucide-react";
+import { Instagram, Mail } from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -92,7 +92,7 @@ const PROGRAMS = [
   },
   {
     title: "Group Healing",
-    desc: "Facilitated community circles that harness the power of collective presence , because healing is rarely a solo journey.",
+    desc: "Facilitated community circles that harness the power of collective presence — because healing is rarely a solo journey.",
     sessions: [
       "Healing circles",
       "Peer support",
@@ -112,13 +112,7 @@ const TEAM = [
   { initials: "CO", name: "Clinton Otieno", role: "Head of Talent Department" },
 ];
 
-const aboutCaptions = [
-  "Our journey began with a simple idea: every young person deserves access to tools for healing and self-expression.",
-  "Through art therapy sessions, we provide a safe space for young people to explore their emotions and tell their stories.",
-  "Our community-centred approach creates space for authentic transformation and lasting change.",
-];
-
-const TESTIMONIALS = [
+const TESTIMONIALS = [               
   {
     name: "Tonny, 26",
     role: "Young Professional",
@@ -152,7 +146,6 @@ const IMPACT_STATS = [
 const IMPACT_BODY =
   "Every young person deserves access to tools for healing and self-expression. Our community-centred approach creates space for authentic transformation.";
 
-/* ─── 2026 Calendar ──────────────────────────────────────────────── */
 const CALENDAR_EVENTS = [
   {
     month: "January",
@@ -285,7 +278,6 @@ const CALENDAR_EVENTS = [
   },
 ];
 
-/* ─── Helpers ────────────────────────────────────────────────────── */
 const CAT_COLORS: Record<string, string> = {
   Meeting: "bg-blue-100 text-blue-700",
   Spiritual: "bg-purple-100 text-purple-700",
@@ -324,9 +316,7 @@ const NAV_LINKS = [
   { label: "Contact", href: "#contact" },
 ];
 
-/* ═══════════════════════════════════════════════════════════════════
-   COMPONENT
-   ═══════════════════════════════════════════════════════════════════ */
+/* ─── Theme Toggle ──────────────────────────────────────────────── */
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -355,7 +345,7 @@ function ThemeToggle() {
             transition:
               "left 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease",
             background: isDark
-              ? "oklch(57.699% 0.26802 311.19)"
+              ? "oklch(0.5148 0.1792 295.08)"
               : "linear-gradient(135deg, oklch(0.62 0.14 290), oklch(0.52 0.20 281))",
             boxShadow: "0 2px 6px rgba(0,0,0,0.25)",
             color: "white",
@@ -368,33 +358,55 @@ function ThemeToggle() {
           )}
         </div>
       </div>
-    </button>
+    </button>    
   );
 }
 
+/* ─── Marquee Row (gallery teaser) ─────────────────────────────── */
+function GalleryMarqueeRow({
+  images,
+  reverse = false,
+}: {
+  images: Array<{ src: string; cat: string }>;
+  reverse?: boolean;
+}) {
+  /* Double so the loop is seamless */
+  const doubled = [...images, ...images];
+  return (
+    <div
+      className="flex gap-3 will-change-transform"
+      style={{
+        animation: `marquee-${reverse ? "reverse" : "forward"} 30s linear infinite`,
+        width: "max-content",
+      }}
+    >
+      {doubled.map((img, i) => (
+        <div
+          key={`${img.src}-${i}`}
+          className="relative h-48 w-36 rounded-2xl overflow-hidden flex-shrink-0 bg-muted"
+        >
+          <NextImage
+            src={img.src}
+            alt={img.cat}
+            fill
+            sizes="144px"
+            className="object-cover"
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   MAIN PAGE
+   ══════════════════════════════════════════════════════════════════ */
 export default function Home() {
   const Image = NextImage;
 
-  /* nav */
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  /* testimonials */
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  useEffect(() => {
-    const t = setInterval(
-      () => setCurrentTestimonial((p: number) => (p + 1) % TESTIMONIALS.length),
-      5000,
-    );
-    return () => clearInterval(t);
-  }, []);
-
-  /* calendar */
   const [calMonth, setCalMonth] = useState(0);
-  const monthEvents = CALENDAR_EVENTS.filter(
-    (e: { month: string }) => e.month === MONTHS[calMonth],
-  );
-
-  /* contact form */
   const [contactForm, setContactForm] = useState({
     fullName: "",
     email: "",
@@ -406,9 +418,23 @@ export default function Home() {
     type: "success" | "error";
     message: string;
   } | null>(null);
-
-  // About slideshow
   const [currentAboutImage, setCurrentAboutImage] = useState(0);
+  const [currentImpactImage, setCurrentImpactImage] = useState(0);
+  const [joinOpen, setJoinOpen] = useState(false);
+  const [joinType, setJoinType] = useState<"member" | "sponsor" | null>(null);
+  const [joinForm, setJoinForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    org: "",
+    message: "",
+  });
+  const [joinLoading, setJoinLoading] = useState(false);
+  const [joinStatus, setJoinStatus] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+
   const aboutImages = [
     "/art-therapy-session.jpg",
     "/music-therapy.jpg",
@@ -422,67 +448,6 @@ export default function Home() {
     "Together we create safe spaces for authentic transformation",
   ];
 
-  // Gallery slideshow
-  const [currentGalleryImage, setCurrentGalleryImage] = useState(0);
-  const galleryImages = [
-    {
-      src: "/gallery1.jpg",
-      cat: "Community",
-      alt: "Healing",
-      title: "Collective Healing",
-      description:
-        "Group therapy sessions create safe spaces where young people share experiences and support each other's mental health journey.",
-    },
-    {
-      src: "/gallery3.jpg",
-      cat: "Art Therapy",
-      alt: "Healing art",
-      title: "Healing Through Art",
-      description:
-        "Participants express emotions through painting, drawing, and sculpting, discovering new ways to process trauma and stress.",
-    },
-    {
-      src: "/gallery6.jpg",
-      cat: "Community",
-      alt: "Healing",
-      title: "Community Healing Circle",
-      description:
-        "Weekly gatherings where young people come together to share, listen, and grow in a supportive environment.",
-    },
-    {
-      src: "/gallery10.jpeg",
-      cat: "Art Therapy",
-      alt: "Creative expression",
-      title: "Creative Expression Workshop",
-      description:
-        "Guided sessions that help unlock emotions through color, form, and texture in a judgment-free space.",
-    },
-    {
-      src: "/gallery15.jpeg",
-      cat: "Music Therapy",
-      alt: "Therapy",
-      title: "Sound & Rhythm Healing",
-      description:
-        "Music therapy sessions use drumming, singing, and songwriting to process emotions that words cannot reach.",
-    },
-    {
-      src: "/gallery21.jpeg",
-      cat: "Team",
-      alt: "Community",
-      title: "Our Dedicated Team",
-      description:
-        "A passionate group of therapists, artists, and musicians committed to youth mental wellness.",
-    },
-  ];
-  useEffect(() => {
-    const t = setInterval(
-      () => setCurrentGalleryImage((p) => (p + 1) % galleryImages.length),
-      4000,
-    );
-    return () => clearInterval(t);
-  }, []);
-
-  const [currentImpactImage, setCurrentImpactImage] = useState(0);
   const impactImages = [
     "/gallery4.jpg",
     "/gallery5.jpg",
@@ -492,6 +457,36 @@ export default function Home() {
     "/gallery35.jpeg",
   ];
 
+  /* ── NOTE: ALL gallery image paths MUST start with "/" ── */
+  const galleryRow1 = [
+    { src: "/gallery1.jpg", cat: "Community" },
+    { src: "/gallery3.jpg", cat: "Performance" },
+    { src: "/gallery6.jpg", cat: "Community" },
+    { src: "/gallery10.jpeg", cat: "Community" },
+    { src: "/gallery15.jpeg", cat: "Team" },
+    { src: "/gallery21.jpeg", cat: "Performance" },
+    { src: "/gallery25.jpeg", cat: "Team" },
+    { src: "/gallery30.jpeg", cat: "Team" },
+  ];
+  const galleryRow2 = [
+    { src: "/gallery2.jpg", cat: "Community" },
+    { src: "/gallery5.jpg", cat: "Community" },
+    { src: "/gallery9.jpeg", cat: "Team" },
+    { src: "/gallery13.jpeg", cat: "Performance" },
+    { src: "/gallery18.jpeg", cat: "Performance" },
+    { src: "/gallery22.jpeg", cat: "Community" },
+    { src: "/gallery28.jpeg", cat: "Performance" },
+    { src: "/gallery35.jpeg", cat: "Team" },
+  ];
+
+  useEffect(() => {
+    const t = setInterval(
+      () => setCurrentTestimonial((p) => (p + 1) % TESTIMONIALS.length),
+      5000,
+    );
+    return () => clearInterval(t);
+  }, []);
+
   useEffect(() => {
     const t = setInterval(
       () => setCurrentImpactImage((p) => (p + 1) % impactImages.length),
@@ -499,6 +494,10 @@ export default function Home() {
     );
     return () => clearInterval(t);
   }, []);
+
+  const monthEvents = CALENDAR_EVENTS.filter(
+    (e) => e.month === MONTHS[calMonth],
+  );
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -530,22 +529,6 @@ export default function Home() {
       setContactLoading(false);
     }
   };
-
-  /* join modal */
-  const [joinOpen, setJoinOpen] = useState(false);
-  const [joinType, setJoinType] = useState<"member" | "sponsor" | null>(null);
-  const [joinForm, setJoinForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    org: "",
-    message: "",
-  });
-  const [joinLoading, setJoinLoading] = useState(false);
-  const [joinStatus, setJoinStatus] = useState<{
-    type: "success" | "error";
-    message: string;
-  } | null>(null);
 
   const openJoin = () => {
     setJoinOpen(true);
@@ -589,21 +572,16 @@ export default function Home() {
     }
   };
 
-  /* hero floating icons — includes drama mask image */
   const floatingItems: Array<{
-    type: "icon" | "image";
-    Icon?: React.ComponentType<{ className?: string; size?: number }>;
-    src?: string;
+    Icon: React.ComponentType<{ className?: string; size?: number }>;
     top: string;
     left: string;
     size: number;
     delay: string;
     color: string;
     bg: string;
-    label?: string;
   }> = [
     {
-      type: "icon",
       Icon: Palette,
       top: "10%",
       left: "7%",
@@ -613,7 +591,6 @@ export default function Home() {
       bg: "bg-violet-100",
     },
     {
-      type: "icon",
       Icon: Music2,
       top: "5%",
       left: "58%",
@@ -623,7 +600,6 @@ export default function Home() {
       bg: "bg-teal-100",
     },
     {
-      type: "icon",
       Icon: Heart,
       top: "60%",
       left: "4%",
@@ -633,7 +609,6 @@ export default function Home() {
       bg: "bg-fuchsia-100",
     },
     {
-      type: "icon",
       Icon: Brush,
       top: "77%",
       left: "42%",
@@ -643,7 +618,6 @@ export default function Home() {
       bg: "bg-violet-100",
     },
     {
-      type: "icon",
       Icon: Headphones,
       top: "16%",
       left: "80%",
@@ -653,7 +627,6 @@ export default function Home() {
       bg: "bg-teal-100",
     },
     {
-      type: "icon",
       Icon: Smile,
       top: "60%",
       left: "72%",
@@ -663,7 +636,6 @@ export default function Home() {
       bg: "bg-fuchsia-100",
     },
     {
-      type: "icon",
       Icon: Wind,
       top: "83%",
       left: "79%",
@@ -673,7 +645,6 @@ export default function Home() {
       bg: "bg-violet-50",
     },
     {
-      type: "icon",
       Icon: Sun,
       top: "39%",
       left: "85%",
@@ -683,7 +654,6 @@ export default function Home() {
       bg: "bg-teal-50",
     },
     {
-      type: "icon",
       Icon: Music2,
       top: "95%",
       left: "13%",
@@ -693,7 +663,6 @@ export default function Home() {
       bg: "bg-fuchsia-50",
     },
     {
-      type: "icon",
       Icon: Star,
       top: "15%",
       left: "30%",
@@ -703,7 +672,6 @@ export default function Home() {
       bg: "bg-violet-50",
     },
     {
-      type: "icon",
       Icon: Sparkles,
       top: "55%",
       left: "55%",
@@ -712,9 +680,7 @@ export default function Home() {
       color: "text-teal-400",
       bg: "bg-teal-50",
     },
-    /* Drama masks icon */
     {
-      type: "icon",
       Icon: Drama,
       top: "43%",
       left: "25%",
@@ -726,9 +692,10 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-warm-cream text-dark-slate">
-      <nav className="fixed top-0 w-full bg-warm-cream/95 backdrop-blur-sm z-50 border-b border-border">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-1">
+    <div className="min-h-screen bg-warm-cream text-dark-slate backdropFilter-blur(12px)">
+      {/* ── NAV ───────────────────────────────────────────── */}
+      <nav className="fixed top-0 w-full bg-warm-cream/95  z-40 border-b border-border backdropFilter-blur(12px)">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-1 backdropFilter-blur(12px)">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Image
@@ -742,7 +709,6 @@ export default function Home() {
                 Sensations
               </span>
             </div>
-
             <div className="hidden md:flex items-center gap-8">
               {NAV_LINKS.map(({ label, href }) => (
                 <a
@@ -754,7 +720,6 @@ export default function Home() {
                 </a>
               ))}
             </div>
-
             <div className="hidden md:flex items-center gap-3">
               <ThemeToggle />
               <Button
@@ -779,7 +744,6 @@ export default function Home() {
               </button>
             </div>
           </div>
-
           {mobileMenuOpen && (
             <div className="md:hidden mt-4 pb-4 border-t border-border pt-4">
               <div className="flex flex-col gap-4">
@@ -808,10 +772,9 @@ export default function Home() {
         </div>
       </nav>
 
-      {/*  HERO */}
+      {/* ── HERO ──────────────────────────────────────────── */}
       <section className="pt-32 pb-20 px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Text */}
           <div className="space-y-8">
             <div>
               <p className="text-sm font-medium text-muted-teal mb-4 tracking-wide uppercase">
@@ -839,7 +802,7 @@ export default function Home() {
               <Button
                 variant="outline"
                 asChild
-                className="border-muted-teal text-muted-teal hover:text-white hover:bg-muted-teal dark:bg-gray-800 dark:hover:text-white dark:border-soft-lavender dark:soft-lavender/90  dark:hover:bg-gray-700 rounded-full px-8 py-6 text-base font-medium cursor-pointer"
+                className="border-muted-teal text-muted-teal hover:text-white hover:bg-muted-teal dark:bg-gray-800 dark:hover:text-white dark:border-soft-lavender dark:hover:bg-gray-700 rounded-full px-8 py-6 text-base font-medium cursor-pointer"
               >
                 <a href="#about">Learn More</a>
               </Button>
@@ -854,18 +817,16 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Floating icons — NO background frame, fully transparent */}
+          {/* Floating icons */}
           <div className="relative h-96 lg:h-[520px]">
-            {/* Central pulse — no box, just the heart */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              {/* Hero section - update the rotating border section */}
               <div className="relative flex items-center justify-center">
                 <div
-                  className="absolute w-52 h-52 rounded-full border-2 border-dashed border-soft-lavender/30 dark:border-muted-teal animate-spin dark:bg-dark-slate/20 dark:backdrop-blur-sm"
+                  className="absolute w-52 h-52 rounded-full border-2 border-dashed border-soft-lavender/30 dark:border-muted-teal animate-spin"
                   style={{ animationDuration: "20s" }}
                 />
                 <div
-                  className="absolute w-36 h-36 rounded-full border-2 border-dashed border-muted-teal/30 dark:border-soft-lavender/30 animate-spin dark:bg-dark-slate/20 dark:backdrop-blur-sm"
+                  className="absolute w-36 h-36 rounded-full border-2 border-dashed border-muted-teal/30 dark:border-soft-lavender/30 animate-spin"
                   style={{
                     animationDuration: "15s",
                     animationDirection: "reverse",
@@ -876,49 +837,22 @@ export default function Home() {
                 </div>
               </div>
             </div>
-
-            {floatingItems.map((item, i) =>
-              item.type === "image" ? (
-                <div
-                  key={i}
-                  className="absolute"
-                  style={{
-                    top: item.top,
-                    left: item.left,
-                    width: item.size + 32,
-                    height: item.size + 32,
-                    animation: "float 5s ease-in-out infinite",
-                    animationDelay: item.delay,
-                  }}
-                >
-                  <Image
-                    src={item.src!}
-                    alt="drama masks"
-                    fill
-                    className="object-contain drop-shadow-lg"
-                  />
-                </div>
-              ) : (
-                <div
-                  key={i}
-                  className={`absolute flex items-center justify-center rounded-2xl shadow-md ${item.bg} border border-white/60`}
-                  style={{
-                    top: item.top,
-                    left: item.left,
-                    width: item.size + 24,
-                    height: item.size + 24,
-                    animation: "float 4s ease-in-out infinite",
-                    animationDelay: item.delay,
-                  }}
-                >
-                  {item.Icon && (
-                    <item.Icon className={item.color} size={item.size} />
-                  )}
-                </div>
-              ),
-            )}
-
-            {/* Labels at bottom — no box behind them */}
+            {floatingItems.map((item, i) => (
+              <div
+                key={i}
+                className={`absolute flex items-center justify-center rounded-2xl shadow-md ${item.bg} border border-white/60`}
+                style={{
+                  top: item.top,
+                  left: item.left,
+                  width: item.size + 24,
+                  height: item.size + 24,
+                  animation: "float 4s ease-in-out infinite",
+                  animationDelay: item.delay,
+                }}
+              >
+                <item.Icon className={item.color} size={item.size} />
+              </div>
+            ))}
             <div className="absolute bottom-4 left-0 right-0 flex justify-between px-4 pointer-events-none">
               <div className="bg-white/80 backdrop-blur-sm rounded-xl px-4 py-2 text-xs font-semibold text-violet-600 shadow">
                 🎨 Art Therapy
@@ -930,7 +864,8 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* About */}
+
+      {/* ── ABOUT ─────────────────────────────────────────── */}
       <section
         id="about"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-soft-lavender/10 via-cream to-muted-teal/10"
@@ -951,34 +886,29 @@ export default function Home() {
                 {ABOUT.body2}
               </p>
               <div className="grid grid-cols-2 gap-5">
-                {VALUES.map(
-                  (
-                    { label, desc }: { label: string; desc: string },
-                    i: number,
-                  ) => {
-                    const icons = [Shield, Eye, Users, Flame];
-                    const IconComponent = icons[i];
-                    return (
-                      <div
-                        key={label}
-                        className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-soft-lavender/20 hover:shadow-lg hover:border-soft-lavender/40 transition-all duration-300"
-                      >
-                        <div className="w-12 h-12 rounded-xl bg-soft-lavender/20 flex items-center justify-center mb-4">
-                          <IconComponent className="w-6 h-6 text-soft-lavender" />
-                        </div>
-                        <h3 className="font-heading font-semibold text-lg mb-2 text-foreground">
-                          {label}
-                        </h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
-                          {desc}
-                        </p>
+                {VALUES.map(({ label, desc }, i) => {
+                  const icons = [Shield, Eye, Users, Flame];
+                  const IconComponent = icons[i];
+                  return (
+                    <div
+                      key={label}
+                      className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-soft-lavender/20 hover:shadow-lg hover:border-soft-lavender/40 transition-all duration-300"
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-soft-lavender/20 flex items-center justify-center mb-4">
+                        <IconComponent className="w-6 h-6 text-soft-lavender" />
                       </div>
-                    );
-                  },
-                )}
+                      <h3 className="font-heading font-semibold text-lg mb-2 text-foreground">
+                        {label}
+                      </h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {desc}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-            {/* About section - replace the image grid with this slideshow */}
+            {/* About slideshow */}
             <div className="relative">
               <div className="relative h-[500px] rounded-2xl overflow-hidden">
                 <Image
@@ -987,21 +917,16 @@ export default function Home() {
                   fill
                   className="object-cover transition-opacity duration-500"
                 />
-                {/* Overlay gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-dark-slate/50 to-transparent" />
-
-                {/* Caption */}
                 <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-dark-slate/80 to-transparent">
                   <p className="text-white text-sm font-medium">
                     {aboutCaptions[currentAboutImage]}
                   </p>
                 </div>
-
-                {/* Navigation arrows */}
                 <button
                   onClick={() =>
-                    setCurrentAboutImage((prev) =>
-                      prev === 0 ? aboutImages.length - 1 : prev - 1,
+                    setCurrentAboutImage((p) =>
+                      p === 0 ? aboutImages.length - 1 : p - 1,
                     )
                   }
                   className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white flex items-center justify-center transition cursor-pointer"
@@ -1010,26 +935,18 @@ export default function Home() {
                 </button>
                 <button
                   onClick={() =>
-                    setCurrentAboutImage(
-                      (prev) => (prev + 1) % aboutImages.length,
-                    )
+                    setCurrentAboutImage((p) => (p + 1) % aboutImages.length)
                   }
                   className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white flex items-center justify-center transition cursor-pointer"
                 >
                   <ChevronRight className="w-5 h-5 text-dark-slate" />
                 </button>
-
-                {/* Dots indicator */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
                   {aboutImages.map((_, idx) => (
                     <button
                       key={idx}
                       onClick={() => setCurrentAboutImage(idx)}
-                      className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
-                        idx === currentAboutImage
-                          ? "w-6 bg-white"
-                          : "bg-white/50"
-                      }`}
+                      className={`w-2 h-2 rounded-full transition-all cursor-pointer ${idx === currentAboutImage ? "w-6 bg-white" : "bg-white/50"}`}
                     />
                   ))}
                 </div>
@@ -1039,7 +956,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Our Vision Section*/}
+      {/* ── OUR VISION ────────────────────────────────────── */}
       <section className="py-32 px-6 lg:px-8 bg-gradient-to-br from-muted-teal/5 via-cream to-soft-lavender/5">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -1113,7 +1030,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Services */}
+      {/* ── SERVICES ──────────────────────────────────────── */}
       <section
         id="what-we-do"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-muted-teal/10 via-cream to-soft-lavender/10"
@@ -1174,7 +1091,8 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* Events */}
+
+      {/* ── EVENTS ────────────────────────────────────────── */}
       <section
         id="events"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-soft-lavender/10 via-cream to-muted-teal/10"
@@ -1192,7 +1110,6 @@ export default function Home() {
               community in 2026.
             </p>
           </div>
-
           <div className="flex items-center justify-between mb-6 bg-white rounded-2xl px-6 py-4 border border-border shadow-sm">
             <button
               onClick={() => setCalMonth((m) => Math.max(0, m - 1))}
@@ -1215,7 +1132,6 @@ export default function Home() {
               <ChevronRight className="w-5 h-5" />
             </button>
           </div>
-
           <div className="flex flex-wrap gap-2 mb-10 justify-center">
             {MONTHS.map((m, i) => {
               const has = CALENDAR_EVENTS.some((e) => e.month === m);
@@ -1223,13 +1139,7 @@ export default function Home() {
                 <button
                   key={m}
                   onClick={() => setCalMonth(i)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition cursor-pointer ${
-                    i === calMonth
-                      ? "bg-soft-lavender text-white"
-                      : has
-                        ? "bg-white dark:bg-gray-800 border border-border hover:border-soft-lavender text-dark-slate dark:text-white"
-                        : "bg-muted/50 dark:bg-gray-800 text-muted-foreground dark:text-white"
-                  }`}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition cursor-pointer ${i === calMonth ? "bg-soft-lavender text-white" : has ? "bg-white dark:bg-gray-800 border border-border hover:border-soft-lavender text-dark-slate dark:text-white" : "bg-muted/50 dark:bg-gray-800 text-muted-foreground dark:text-white"}`}
                 >
                   {m.slice(0, 3)}
                   {has && i !== calMonth && (
@@ -1239,7 +1149,6 @@ export default function Home() {
               );
             })}
           </div>
-
           {monthEvents.length === 0 ? (
             <div className="text-center py-16 text-muted-foreground">
               <Calendar className="w-12 h-12 mx-auto mb-4 opacity-30" />
@@ -1277,9 +1186,8 @@ export default function Home() {
               ))}
             </div>
           )}
-
           <div className="mt-12 bg-gradient-to-r from-violet-50 to-teal-50 rounded-2xl p-6 text-center border border-border">
-            <p className="text-sm text-muted-foreground mb-1 dark:text-muted-foreground/20">
+            <p className="text-sm text-muted-foreground mb-1">
               Total events in 2026
             </p>
             <p className="font-heading font-bold text-3xl text-soft-lavender">
@@ -1291,35 +1199,29 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* Impact */}
+
+      {/* ── IMPACT ────────────────────────────────────────── */}
       <section
         id="impact"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-muted-teal/10 via-cream to-soft-lavender/10"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="relative h-96 lg:h-full min-h-96 rounded-3xl overflow-hidden order-2 lg:order-1">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="relative h-96 lg:h-[520px] rounded-3xl overflow-hidden order-2 lg:order-1">
             {impactImages.map((src, idx) => (
               <Image
                 key={src}
                 src={src}
-                alt="Art therapy in progress"
+                alt="Community healing"
                 fill
-                className={`object-cover transition-opacity duration-1000 ${
-                  idx === currentImpactImage ? "opacity-100" : "opacity-0"
-                }`}
+                className={`object-cover transition-opacity duration-1000 ${idx === currentImpactImage ? "opacity-100" : "opacity-0"}`}
               />
             ))}
-            {/* Dot indicators */}
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
               {impactImages.map((_, idx) => (
                 <button
                   key={idx}
                   onClick={() => setCurrentImpactImage(idx)}
-                  className={`rounded-full transition-all cursor-pointer ${
-                    idx === currentImpactImage
-                      ? "w-6 h-2 bg-white"
-                      : "w-2 h-2 bg-white/50"
-                  }`}
+                  className={`rounded-full transition-all cursor-pointer ${idx === currentImpactImage ? "w-6 h-2 bg-white" : "w-2 h-2 bg-white/50"}`}
                 />
               ))}
             </div>
@@ -1365,109 +1267,44 @@ export default function Home() {
         </div>
       </section>
 
-      {/* gallery */}
+      {/* ── GALLERY TEASER (marquee rows) ─────────────────── */}
       <section
         id="gallery"
-        className="py-32 px-6 lg:px-8 bg-gradient-to-br from-soft-lavender/10 via-cream to-muted-teal/10"
+        className="py-32 bg-gradient-to-br from-soft-lavender/10 via-cream to-muted-teal/10 overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
-            <p className="text-sm font-medium text-muted-teal mb-4 tracking-wide uppercase">
-              Creative Showcase
-            </p>
-            <h2 className="font-heading font-bold text-4xl lg:text-5xl text-balance mb-6">
-              Stories Told Through Art & Sound
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Explore the transformative power of creative expression from our
-              community sessions.
-            </p>
-          </div>
-          {/* Gallery Slideshow */}
-          <div className="relative rounded-3xl overflow-hidden h-[500px]">
-            {galleryImages.map((item, idx) => (
-              <div
-                key={item.src}
-                className={`absolute inset-0 transition-opacity duration-700 ${
-                  idx === currentGalleryImage ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                <Image
-                  src={item.src}
-                  alt={item.alt}
-                  fill
-                  className="object-cover"
-                />
-                {/* Dark overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-slate/80 via-dark-slate/20 to-transparent" />
-                {/* Text overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <span className="inline-block px-3 py-1 bg-soft-lavender/90 text-white text-xs font-medium rounded-full mb-3">
-                    {item.cat}
-                  </span>
-                  <h3 className="font-heading font-bold text-2xl text-white mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-white/80 text-sm leading-relaxed max-w-lg">
-                    {item.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-
-            {/* Navigation arrows */}
-            <button
-              onClick={() =>
-                setCurrentGalleryImage((p) =>
-                  p === 0 ? galleryImages.length - 1 : p - 1,
-                )
-              }
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-sm flex items-center justify-center transition cursor-pointer z-10"
-            >
-              <ChevronLeft className="w-5 h-5 text-white" />
-            </button>
-            <button
-              onClick={() =>
-                setCurrentGalleryImage((p) => (p + 1) % galleryImages.length)
-              }
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-sm flex items-center justify-center transition cursor-pointer z-10"
-            >
-              <ChevronRight className="w-5 h-5 text-white" />
-            </button>
-
-            {/* Dot indicators */}
-            <div className="absolute top-4 right-4 flex gap-2 z-10">
-              {galleryImages.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentGalleryImage(idx)}
-                  className={`rounded-full transition-all cursor-pointer ${
-                    idx === currentGalleryImage
-                      ? "w-6 h-2 bg-white"
-                      : "w-2 h-2 bg-white/50"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* View Full Gallery Button */}
-          <div className="text-center mt-12">
-            <Link
-              href="/gallery"
-              className="inline-flex items-center gap-2 bg-soft-lavender hover:bg-soft-lavender/90 text-white rounded-full px-8 py-4 font-medium transition-colors"
-            >
-              View Full Gallery
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 mb-12 text-center">
+          <p className="text-sm font-medium text-muted-teal mb-4 tracking-wide uppercase">
+            Creative Showcase
+          </p>
+          <h2 className="font-heading font-bold text-4xl lg:text-5xl text-balance mb-6">
+            Stories Told Through Art & Sound
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Explore the transformative power of creative expression from our
+            community sessions.
+          </p>
+        </div>
+        <div className="overflow-hidden mb-3">
+          <GalleryMarqueeRow images={galleryRow1} reverse={false} />
+        </div>
+        <div className="overflow-hidden">
+          <GalleryMarqueeRow images={galleryRow2} reverse={true} />
+        </div>
+        <div className="text-center mt-12">
+          <Link
+            href="/gallery"
+            className="inline-flex items-center gap-2 bg-soft-lavender hover:bg-soft-lavender/90 text-white rounded-full px-8 py-4 font-medium transition-colors"
+          >
+            View Full Gallery
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </section>
 
-      {/*  TESTIMONIALS  */}
+      {/* ── TESTIMONIALS ──────────────────────────────────── */}
       <section
         id="testimonials"
-        className="py-32 px-6 lg:px-8 bg-gradient-to-br from-muted-teal/10 via-cream to-soft-lavender/10 "
+        className="py-32 bg-gradient-to-br from-muted-teal/10 via-cream to-soft-lavender/10"
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-20">
@@ -1532,8 +1369,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TEAM  */}
-      {/* TEAM - Custom layout: 4 on top, 3 centered on bottom */}
+      {/* ── TEAM ──────────────────────────────────────────── */}
       <section
         id="team"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-soft-lavender/10 via-cream to-muted-teal/10"
@@ -1551,8 +1387,6 @@ export default function Home() {
               community builders dedicated to youth healing.
             </p>
           </div>
-
-          {/* Top row - 4 members */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
             {TEAM.slice(0, 4).map(({ initials, name, role }, i) => {
               const gradients = [
@@ -1578,12 +1412,10 @@ export default function Home() {
               );
             })}
           </div>
-
-          {/* Bottom row - 3 members centered with custom grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
             {TEAM.slice(4, 7).map(({ initials, name, role }, i) => {
               const gradients = [
-                "from-coral-300 to-fuchsia-400",
+                "from-pink-400 to-fuchsia-400",
                 "from-fuchsia-400 to-teal-400",
                 "from-violet-400 to-teal-800",
               ];
@@ -1604,7 +1436,6 @@ export default function Home() {
               );
             })}
           </div>
-
           <div className="bg-gradient-to-r from-violet-50 to-teal-50 rounded-3xl p-8 text-center border border-border mt-16">
             <h3 className="font-heading font-bold text-xl mb-2 dark:text-black">
               Want to Volunteer or Collaborate?
@@ -1623,7 +1454,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* NEWSLETTER */}
+      {/* ── NEWSLETTER ────────────────────────────────────── */}
       <section className="py-20 px-6 lg:px-8 bg-gradient-to-r from-soft-lavender/20 via-cream to-muted-teal/20">
         <div className="max-w-2xl mx-auto text-center">
           <p className="text-sm font-medium text-muted-teal mb-4 tracking-wide uppercase">
@@ -1641,12 +1472,11 @@ export default function Home() {
               e.preventDefault();
               const form = e.currentTarget;
               const input = form.querySelector("input") as HTMLInputElement;
-              const email = input.value;
               try {
                 const res = await fetch("/api/newsletter", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ email }),
+                  body: JSON.stringify({ email: input.value }),
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error);
@@ -1676,7 +1506,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CONTACT  */}
+      {/* ── CONTACT ───────────────────────────────────────── */}
       <section
         id="contact"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-muted-teal/10 via-cream to-soft-lavender/10"
@@ -1693,7 +1523,6 @@ export default function Home() {
               Have questions? Ready to join? We'd love to hear from you.
             </p>
           </div>
-
           <form
             onSubmit={handleContactSubmit}
             className="space-y-6 bg-white p-8 lg:p-12 rounded-3xl border border-border"
@@ -1777,7 +1606,6 @@ export default function Home() {
               {contactLoading ? "Sending…" : "Send Message"}
             </Button>
           </form>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
             {[
               { Icon: Heart, title: "Location", detail: SITE.location },
@@ -1813,7 +1641,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/*  GET INVOLVED CTA  */}
+      {/* ── GET INVOLVED CTA ──────────────────────────────── */}
       <section
         id="get-involved"
         className="py-32 px-6 lg:px-8 max-w-4xl mx-auto text-center"
@@ -1846,7 +1674,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* JOIN MODAL  */}
+      {/* ── JOIN MODAL ────────────────────────────────────── */}
       {joinOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
           <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative max-h-[90vh] overflow-y-auto">
@@ -1856,7 +1684,6 @@ export default function Home() {
             >
               <X className="w-5 h-5" />
             </button>
-
             {joinStatus?.type === "success" ? (
               <div className="text-center py-6">
                 <CheckCircle className="w-14 h-14 text-green-500 mx-auto mb-4" />
@@ -2034,11 +1861,7 @@ export default function Home() {
                   <Button
                     type="submit"
                     disabled={joinLoading}
-                    className={`w-full text-white rounded-full py-3 font-medium disabled:opacity-60 cursor-pointer ${
-                      joinType === "member"
-                        ? "bg-soft-lavender hover:bg-soft-lavender/90"
-                        : "bg-muted-teal hover:bg-muted-teal/90"
-                    }`}
+                    className={`w-full text-white rounded-full py-3 font-medium disabled:opacity-60 cursor-pointer ${joinType === "member" ? "bg-soft-lavender hover:bg-soft-lavender/90" : "bg-muted-teal hover:bg-muted-teal/90"}`}
                   >
                     {joinLoading
                       ? "Submitting…"
@@ -2053,20 +1876,16 @@ export default function Home() {
         </div>
       )}
 
-      {/*  FOOTER  */}
-      {/* FOOTER - Added Services column */}
+      {/* ── FOOTER ────────────────────────────────────────── */}
       <footer className="border-t border-border bg-gradient-to-br from-soft-lavender/10 via-cream to-muted-teal/10 py-16 px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 mb-12">
-            {/* Brand Column */}
             <div className="lg:col-span-1">
               <p className="font-heading font-bold text-lg mb-2">{SITE.name}</p>
               <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
                 {SITE.footerTagline}
               </p>
             </div>
-
-            {/* Navigation Column */}
             <div>
               <p className="text-sm font-medium font-heading mb-4">Navigate</p>
               <ul className="space-y-2 text-sm text-muted-foreground">
@@ -2082,63 +1901,28 @@ export default function Home() {
                 ))}
               </ul>
             </div>
-
-            {/* Services Column - NEW */}
             <div>
               <p className="text-sm font-medium font-heading mb-4">Services</p>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>
-                  <a
-                    href="#what-we-do"
-                    className="hover:text-soft-lavender transition cursor-pointer"
-                  >
-                    Art Therapy
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#what-we-do"
-                    className="hover:text-soft-lavender transition cursor-pointer"
-                  >
-                    Music Therapy
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#what-we-do"
-                    className="hover:text-soft-lavender transition cursor-pointer"
-                  >
-                    Group Healing Circles
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#what-we-do"
-                    className="hover:text-soft-lavender transition cursor-pointer"
-                  >
-                    Mental Health Workshops
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#what-we-do"
-                    className="hover:text-soft-lavender transition cursor-pointer"
-                  >
-                    Community Events
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#what-we-do"
-                    className="hover:text-soft-lavender transition cursor-pointer"
-                  >
-                    Youth Counseling
-                  </a>
-                </li>
+                {[
+                  "Art Therapy",
+                  "Music Therapy",
+                  "Group Healing Circles",
+                  "Mental Health Workshops",
+                  "Community Events",
+                  "Youth Counseling",
+                ].map((s) => (
+                  <li key={s}>
+                    <a
+                      href="#what-we-do"
+                      className="hover:text-soft-lavender transition cursor-pointer"
+                    >
+                      {s}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
-
-            {/* Connect Column */}
             <div>
               <p className="text-sm font-medium font-heading mb-4">Connect</p>
               <ul className="space-y-3 text-sm text-muted-foreground">
@@ -2178,17 +1962,12 @@ export default function Home() {
                     href={`mailto:${SITE.email}`}
                     className="flex items-center gap-2 hover:text-soft-lavender transition cursor-pointer"
                   >
-                    <Mail
-                      size={18}
-                      className="group-hover:scale-110 transition-transform"
-                    />
+                    <Mail size={18} />
                     Email Us
                   </a>
                 </li>
               </ul>
             </div>
-
-            {/* Location & CTA Column */}
             <div>
               <p className="text-sm font-medium font-heading mb-4">Based in</p>
               <p className="text-sm text-muted-foreground mb-4">
@@ -2207,10 +1986,19 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
       <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
           50%       { transform: translateY(-14px) rotate(3deg); }
+        }
+        @keyframes marquee-forward {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes marquee-reverse {
+          0%   { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
         }
       `}</style>
     </div>

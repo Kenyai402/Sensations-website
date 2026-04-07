@@ -7,7 +7,7 @@
 :root {
   --warm-cream: oklch(0.985 0.005 285);
   --muted-teal: oklch(0.52 0.09 200);
-  --soft-lavender: oklch(57.699% 0.26802 311.19);
+  --soft-lavender:oklch(0.5148 0.1792 295.08);
   --warm-coral: oklch(0.62 0.14 290);
   --dark-slate: oklch(0.25 0.04 285);
 
@@ -49,8 +49,8 @@
 .dark {
   --warm-cream: #0a0a0a;
   --muted-teal: oklch(0.65 0.09 200);
-  --soft-lavender: oklch(57.699% 0.26802 311.19);
-  --warm-coral: oklch(0.72 0.14 290);
+  --soft-lavender:oklch(0.5148 0.1792 295.08);
+  --warm-coral: oklch(0.5148 0.1792 295.08);
   --dark-slate: #f0f0f0;
 
   --background: #0a0a0a;
@@ -65,18 +65,18 @@
   --secondary-foreground: #f0f0f0;
   --muted: #1a1a1a;
   --muted-foreground: #888888;
-  --accent: oklch(0.72 0.14 290);
+  --accent: oklch(0.5148 0.1792 295.08);
   --accent-foreground: #ffffff;
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
   --border: #2a2a2a;
   --input: #1e1e1e;
   --ring: oklch(0.72 0.18 281);
-  --chart-1: oklch(0.72 0.14 290);
+  --chart-1: oklch(0.5148 0.1792 295.08);
   --chart-2: oklch(0.65 0.09 200);
   --chart-3: oklch(0.72 0.18 281);
   --chart-4: oklch(0.65 0.09 200);
-  --chart-5: oklch(0.72 0.14 290);
+  --chart-5: oklch(0.5148 0.1792 295.08);
   --sidebar: #141414;
   --sidebar-foreground: #f0f0f0;
   --sidebar-primary: oklch(0.72 0.18 281);
@@ -184,7 +184,7 @@
 
 /* Testimonial card purple border */
 .dark .bg-soft-lavender\/10 {
-  border: 1px solid  oklch(57.699% 0.26802 311.19) !important;
+  border: 1px solid oklch(0.5148 0.1792 295.08)!important;
   background-color: #1a1228 !important;
 }
 
@@ -214,7 +214,7 @@
 }
 
 .dark footer a:hover {
-  color: oklch(57.699% 0.26802 311.19);;   /* ← hover stays lavender */
+  color:  oklch(0.5148 0.1792 295.08);   /* ← hover stays lavender */
 }
 
 .dark footer h3,
@@ -223,9 +223,9 @@
 }
 
 /* Keep brand-colored text bright */
-.dark .text-soft-lavender { color: oklch(57.699% 0.26802 311.19) !important; }
+.dark .text-soft-lavender { color:  oklch(0.5148 0.1792 295.08)important; }
 .dark .text-muted-teal    { color: oklch(0.65 0.09 200) !important; }
-.dark .text-warm-coral    { color: oklch(0.72 0.14 290) !important; }
+.dark .text-warm-coral    { color: oklch(0.5148 0.1792 295.08) !important; }
 .dark .text-white         { color: #ffffff !important; }
 
 /* Keep heading font color inside buttons white */
@@ -239,7 +239,7 @@
   color:  #ffffff;
 }
 .dark nav a:hover {
-  color:  oklch(57.699% 0.26802 311.19) ;
+  color:  oklch(0.5148 0.1792 295.08) ;
 }
 
 /* Sensations brand label in navbar */
@@ -308,4 +308,33 @@
   .animate-fadeIn {
     animation: fadeIn 1s ease-out;
   }
+}
+@keyframes scrollUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes scrollDown {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-scroll-up {
+  animation: scrollUp 25s linear infinite;
+}
+
+.animate-scroll-up-slow {
+  animation: scrollUp 35s linear infinite;
+}
+
+.animate-scroll-down {
+  animation: scrollDown 30s linear infinite;
 }
