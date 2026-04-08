@@ -195,7 +195,7 @@
   color: #f0f0f0;
 }
 
-.dark p, .dark span, .dark a, .dark label {
+.dark p, .dark span, .dark label {
   color: #a9a0a0;
 }
 
@@ -205,13 +205,7 @@
   color: #888888;        /* ← tagline and copyright */
 }
 
-.dark footer a {
-  color: #8e8585;        /* ← nav links default */
-}
 
-.dark footer a:hover {
-  color:  oklch(0.5148 0.1792 295.08);   /* ← hover stays lavender */
-}
 
 .dark footer h3,
 .dark footer p.font-bold {

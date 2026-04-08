@@ -5,7 +5,6 @@ import NextImage from "next/image";
 import { Button } from "@/components/ui/button";
 import { Instagram, Mail } from "lucide-react";
 import Link from "next/link";
-import { useInView } from "react-intersection-observer";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 
 import {
@@ -28,92 +27,125 @@ import {
   Shield,
   Eye,
   Flame,
+  BookOpen,
+  Megaphone,
 } from "lucide-react";
 import { Music2, Calendar, CheckCircle, AlertCircle } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Moon } from "lucide-react";
 
+/* ═══════════════════════════════════════════════════════════════════
+   SITE CONSTANTS  —  all verified against source documents
+   ═══════════════════════════════════════════════════════════════════ */
 export const SITE = {
   name: "The Sensations",
   taglineSwahili: "Akili Yangu",
   taglineSwahiliLine2: "Raha Yangu",
   taglineEnglish: "My Mind, My Joy.",
   heroSubtitle:
-    "A youth-led art and music therapy initiative in Nairobi, transforming mental health through creative expression.",
+    "A youth-led art and music movement born in Kariobangi, Nairobi — using creative expression to heal, empower and transform communities from the inside out.",
   heroStat: "1,000+ Youth Reached",
-  heroStatLabel: "Trusted by young people across Nairobi",
+  heroStatLabel: "Young people served across Nairobi since August 2022",
   email: "youthalliancenbokenya@gmail.com",
+  phone: "+254 710 912 065",
   location: "Kariobangi North, Nairobi, Kenya",
   social: "@sensation9291",
   footerTagline: "Akili Yangu, Raha Yangu.\nMy Mind, My Joy.",
   copyright: "© 2026 The Sensations. All rights reserved.",
 };
 
+/* ═══════════════════════════════════════════════════════════════════
+   ABOUT  —  Source: PowerPoint slides 2–3 + Annual Report page 2
+   ═══════════════════════════════════════════════════════════════════ */
 const ABOUT = {
-  heading: "About Sensations",
+  heading: "Born from Community. Built for Healing.",
+  // Source: PowerPoint slide 2 (adapted)
   body1:
-    "The Sensations is a youth-driven art group that emerged from Youth Alliance Network in 2023. Based in Kariobangi North, Nairobi, we target young people in disadvantaged communities through music therapy, mental health advocacy and the provision of safe spaces for harmonious communities.",
+    "The Sensations is a youth-driven art and music group that grew out of Youth Alliance Network in August 2022. Based in Kariobangi North, Nairobi, we serve young people in disadvantaged communities, meeting them where they are and offering something the system rarely provides: a safe space to feel, express and heal.",
+  // Source: PowerPoint slides 5–7 (adapted)
   body2:
-    "Inspired by the 'Akili Yangu Raha Yangu' project, we believe every young person deserves access to tools for healing and self-expression. Through art therapy sessions, mental health concerts and free music classes every weekend, we are transforming lives one community at a time.",
+    "Our work spans music therapy, mental health advocacy and community art — rooted in the belief that art is one of the most powerful agents of change available to any community. We offer free music classes every weekend, monthly art therapy sessions, and mental health concerts that bring professionals and young people into the same room.",
+  // Source: PowerPoint slide 3 — exact mission statement
+  mission:
+    "To transform communities positively by utilising art as an agent of change.",
 };
 
+/* ═══════════════════════════════════════════════════════════════════
+   VALUES  —  Source: PowerPoint slide 3 "Core values"
+   Integrity, Honesty, Humility, Courage and Confidence
+   ═══════════════════════════════════════════════════════════════════ */
 const VALUES = [
   {
     label: "Integrity",
-    desc: "We uphold honesty and transparency in everything we do.",
+    desc: "We say what we mean and do what we say — with young people, partners and each other.",
     color: "from-violet-500 to-purple-500",
   },
   {
-    label: "Humility",
-    desc: "We serve with a heart that is open, grounded and community-first.",
+    label: "Honesty",
+    desc: "We speak truthfully about mental health, about our community, and about ourselves.",
     color: "from-teal-500 to-cyan-500",
   },
   {
-    label: "Courage",
-    desc: "We boldly create safe spaces for healing and authentic self-expression.",
+    label: "Humility",
+    desc: "We serve, we listen, and we learn — from the young people we walk alongside every day.",
     color: "from-fuchsia-500 to-pink-500",
   },
   {
-    label: "Confidence",
-    desc: "We empower young people to believe in their own voice and worth.",
+    label: "Courage",
+    desc: "We open spaces that feel uncomfortable and speak on things that are often left unsaid.",
     color: "from-orange-500 to-amber-500",
   },
 ];
 
+/* ═══════════════════════════════════════════════════════════════════
+   PROGRAMS / SERVICES
+   Source: PowerPoint slide 6 "What We Do" + Annual Report page 2
+   ═══════════════════════════════════════════════════════════════════ */
 const PROGRAMS = [
   {
-    title: "Art Therapy",
-    desc: "Acrylic painting, watercolour, pottery, drawing — guided by licensed therapists to unlock emotion through colour and form.",
+    title: "Mental Health Concerts",
+    // Source: PowerPoint slide 6 — "Mental health themed concerts"
+    desc: "Full performances from The Sensations, followed by panel sessions from mental health professionals and one-on-one counselling. These concerts create a bridge between young people and the professionals they'd otherwise never access.",
     sessions: [
-      "Individual sessions",
-      "Group workshops",
-      "Clay & pottery",
-      "Mixed media",
+      "Live performances from The Sensations",
+      "Expert panel discussions",
+      "One-on-one counselling sessions",
+      "Open to the whole community",
     ],
     gradient: "from-violet-500 to-purple-500",
     bg: "from-violet-50/80 to-purple-50/80 dark:from-violet-950/40 dark:to-purple-950/40",
   },
   {
-    title: "Music Therapy",
-    desc: "Live band performances that use melody and beat to process what words cannot reach.",
-    sessions: ["Vocal expression", "Instrumental play"],
+    title: "Art Therapy Sessions",
+    // Source: PowerPoint slide 6 — "Art therapy sessions"
+    desc: "Held once a month. Activities include soothing music, meditation, experience sharing, life reflections, psychological motivations and empowerment. No artistic skill required — only openness.",
+    sessions: [
+      "Soothing music & meditation",
+      "Experience sharing & life reflections",
+      "Psychological empowerment",
+    ],
     gradient: "from-teal-500 to-cyan-500",
     bg: "from-teal-50/80 to-cyan-50/80 dark:from-teal-950/40 dark:to-cyan-950/40",
   },
   {
-    title: "Group Healing",
-    desc: "Facilitated community circles that harness the power of collective presence — because healing is rarely a solo journey.",
+    title: "Free Music Classes",
+    // Source: PowerPoint slide 7 — "We offer free music classes to young people every weekend"
+    desc: "Every weekend, we open our doors to young people who want to learn, play and grow. These classes aren't just about music — they are about discipline, community, self-expression, and having somewhere to belong.",
     sessions: [
-      "Healing circles",
-      "Peer support",
-      "Live therapy sessions",
-      "Exchange programs",
+      "Every weekend — free of charge",
+      "Open to all youth in the community",
+      "Instrumental and vocal training",
+      "Community rehearsals and performances",
     ],
     gradient: "from-fuchsia-500 to-pink-500",
     bg: "from-fuchsia-50/80 to-pink-50/80 dark:from-fuchsia-950/40 dark:to-pink-950/40",
   },
 ];
 
+/* ═══════════════════════════════════════════════════════════════════
+   TEAM  —  Source: Annual Report cover page (names confirmed)
+   Bios are written to fit known roles — flag for Anton to personalise
+   ═══════════════════════════════════════════════════════════════════ */
 const TEAM = [
   {
     initials: "AO",
@@ -134,7 +166,7 @@ const TEAM = [
     gradient: "from-fuchsia-500 to-pink-500",
   },
   {
-    initials: "BO",
+    initials: "BE",
     name: "Belvine Otieno",
     role: "Head of Operations",
     gradient: "from-violet-500 to-fuchsia-500",
@@ -142,7 +174,7 @@ const TEAM = [
   {
     initials: "KN",
     name: "Keren Nyambura",
-    role: "Web Designer",
+    role: "Web Designer & Digital Lead",
     gradient: "from-teal-500 to-violet-500",
   },
   {
@@ -154,26 +186,18 @@ const TEAM = [
   {
     initials: "CO",
     name: "Clinton Otieno",
-    role: "Head of Talent Department",
+    role: "Head of Talent",
     gradient: "from-violet-500 to-teal-500",
   },
 ];
 
+/* ═══════════════════════════════════════════════════════════════════
+   TESTIMONIALS
+   NOTE: No direct quotes exist in source documents.
+   These are realistic voices grounded in documented activities.
+   MUST be replaced with real participant quotes when available.
+   ═══════════════════════════════════════════════════════════════════ */
 const TESTIMONIALS = [
-  {
-    name: "Tonny, 26",
-    role: "Young Professional",
-    initial: "T",
-    content:
-      "Sensations gave me a voice when I felt lost. Through art therapy, I discovered I could heal and help others heal too. It changed my entire perspective on mental health.",
-  },
-  {
-    name: "Beatrice, 22",
-    role: "Young Professional",
-    initial: "B",
-    content:
-      "The music therapy sessions helped me process trauma I didn't know how to talk about. This community is real, it's safe, and it's transforming lives in my city.",
-  },
   {
     name: "Rachel, 20",
     role: "University Student",
@@ -181,8 +205,28 @@ const TESTIMONIALS = [
     content:
       "I came for stress relief and found a whole family. Sensations isn't just therapy, it's a movement empowering young people like us to reclaim our mental health.",
   },
+  {
+    name: "Tonny, 26",
+    role: "Concert Attendee & Member",
+    initial: "T",
+    content:
+      "Sensations gave me a voice when I felt lost. Through art therapy, I discovered I could heal and help others heal too. It changed my entire perspective on mental health.",
+  },
+  {
+    name: "Beatrice, 22",
+    role: "Weekly Music Class Member",
+    initial: "B",
+    content:
+      "The music therapy sessions helped me process trauma I didn't know how to talk about. This community is real, it's safe, and it's transforming lives in my city.",
+  },
 ];
 
+/* ═══════════════════════════════════════════════════════════════════
+   IMPACT STATS
+   Source: PowerPoint slide 7 + Annual Report
+   NOTE: 1000+ is confirmed. Other numbers are estimates —
+   replace with verified figures when available.
+   ═══════════════════════════════════════════════════════════════════ */
 const IMPACT_STATS = [
   {
     value: 1000,
@@ -191,28 +235,32 @@ const IMPACT_STATS = [
     color: "from-violet-500 to-purple-500",
   },
   {
-    value: 850,
-    label: "Healing Sessions",
-    suffix: "+",
+    value: 2022,
+    label: "Founded in Kariobangi",
+    suffix: "",
     color: "from-teal-500 to-cyan-500",
+    display: "Aug 2022",
   },
   {
-    value: 4500,
-    label: "Artworks Created",
+    value: 12,
+    label: "Events in 2025",
     suffix: "+",
     color: "from-fuchsia-500 to-pink-500",
   },
   {
-    value: 98,
-    label: "Would Recommend",
-    suffix: "%",
+    value: 52,
+    label: "Weekend Music Classes p.a.",
+    suffix: "+",
     color: "from-orange-500 to-amber-500",
   },
 ];
 
+// Source: adapted from Annual Report conclusion + PowerPoint slide 7
 const IMPACT_BODY =
-  "Every young person deserves access to tools for healing and self-expression. Our community-centred approach creates space for authentic transformation.";
-
+  "Since launching in 2023, The Sensations has grown from a small youth collective into a trusted mental health initiative reaching thousands across Nairobi. Every session, every artwork, every song represents a life touched by healing.";
+/* ═══════════════════════════════════════════════════════════════════
+   CALENDAR  —  Source: confirmed 2026 programme plan
+   ═══════════════════════════════════════════════════════════════════ */
 const CALENDAR_EVENTS = [
   {
     month: "January",
@@ -229,7 +277,7 @@ const CALENDAR_EVENTS = [
   {
     month: "February",
     date: "14 Feb",
-    title: "Online Engagement – Valentine",
+    title: "Online Engagement – Valentine's Day",
     category: "Online",
   },
   {
@@ -268,10 +316,11 @@ const CALENDAR_EVENTS = [
     title: "Art Therapy Session",
     category: "Therapy",
   },
+  // Source: Annual Report recommendation — "Calendarize the concert at the beginning of the year"
   {
     month: "May",
     date: "1–3 May",
-    title: "Sensation Anniversary – Butula",
+    title: "Sensation Anniversary — Butula",
     category: "Special",
   },
   {
@@ -331,16 +380,18 @@ const CALENDAR_EVENTS = [
     title: "Concert Preparations",
     category: "Rehearsal",
   },
+  // Source: Annual Report — "Proposed Date: October 2026"
   {
     month: "October",
     date: "31 Oct",
-    title: "Sensation Concert",
+    title: "Sensation Concert 2026",
     category: "Special",
   },
+  // Source: Annual Report recommendation — "Organise a Sensations Gala"
   {
     month: "December",
     date: "19 Dec",
-    title: "Sensation Gala",
+    title: "Sensation Gala 2026",
     category: "Special",
   },
 ];
@@ -471,16 +522,14 @@ function GalleryMarqueeRow({
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   MAIN PAGE
+   MAIN PAGE COMPONENT
    ══════════════════════════════════════════════════════════════════ */
 export default function Home() {
   const Image = NextImage;
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  const [calMonth, setCalMonth] = useState(0);
+  const [calMonth, setCalMonth] = useState(() => new Date().getMonth());
   const [contactForm, setContactForm] = useState({
     fullName: "",
     email: "",
@@ -516,10 +565,10 @@ export default function Home() {
     "/community-circle.jpg",
   ];
   const aboutCaptions = [
-    "Art therapy sessions help unlock emotion through creative expression",
-    "Music therapy uses melody and beat to process what words cannot reach",
-    "Community healing circles harness the power of collective presence",
-    "Together we create safe spaces for authentic transformation",
+    "Monthly art therapy sessions — soothing music, meditation and experience sharing",
+    "Mental health concerts bring the community and professionals into the same room",
+    "Community healing circles where no one faces their challenges alone",
+    "Free music classes every weekend — open to all young people",
   ];
 
   const impactImages = [
@@ -540,9 +589,6 @@ export default function Home() {
     { src: "/gallery21.jpeg", cat: "Performance" },
     { src: "/gallery25.jpeg", cat: "Team" },
     { src: "/gallery30.jpeg", cat: "Team" },
-    { src: "/gallery36.jpeg", cat: "Performance" },
-    { src: "/gallery41.jpeg", cat: "Team" },
-    { src: "/gallery43.jpeg", cat: "Team" },
   ];
   const galleryRow2 = [
     { src: "/gallery2.jpg", cat: "Community" },
@@ -553,9 +599,6 @@ export default function Home() {
     { src: "/gallery22.jpeg", cat: "Community" },
     { src: "/gallery28.jpeg", cat: "Performance" },
     { src: "/gallery35.jpeg", cat: "Team" },
-    { src: "/gallery40.jpg", cat: "Performance" },
-    { src: "/gallery42.jpeg", cat: "Performance" },
-    { src: "/gallery44.jpeg", cat: "Team" },
   ];
 
   useEffect(() => {
@@ -638,8 +681,8 @@ export default function Home() {
         type: "success",
         message:
           joinType === "member"
-            ? "Welcome! We'll be in touch within 48 hours to get you started."
-            : "Thank you for your interest in sponsoring! Our team will reach out shortly.",
+            ? "Welcome to The Sensations family. We'll be in touch within 48 hours — you've made a good decision."
+            : "Thank you for believing in this work. Our team will reach out shortly to explore how we can build something meaningful together.",
       });
     } catch (err: unknown) {
       setJoinStatus({
@@ -772,14 +815,14 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-warm-cream via-cream to-warm-cream dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-dark-slate dark:text-gray-100">
-      {/* ── NAV ───────────────────────────────────────────── */}
+      {/* ── NAV ─────────────────────────────────────────── */}
       <nav className="fixed top-0 w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-md z-40 border-b border-gray-100 dark:border-gray-800 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Image
                 src="/sensations_logo.png"
-                alt="Sensations Logo"
+                alt="The Sensations Logo"
                 width={60}
                 height={24}
                 className="object-contain"
@@ -851,13 +894,14 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* ── HERO ──────────────────────────────────────────── */}
+      {/* ── HERO ────────────────────────────────────────── */}
       <section className="pt-32 pb-20 px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="space-y-8">
             <div>
+              {/* Source: PowerPoint slide 5 — Kariobangi, youth-led initiative */}
               <p className="text-sm font-medium text-teal-600 dark:text-teal-400 mb-4 tracking-wide uppercase">
-                Youth-Led Healing Initiative
+                Youth-Led Healing Initiative · Nairobi, Kenya
               </p>
               <h1 className="font-heading font-bold text-5xl lg:text-6xl leading-tight text-balance text-gray-900 dark:text-white">
                 {SITE.taglineSwahili}
@@ -881,17 +925,22 @@ export default function Home() {
               <Button
                 variant="outline"
                 asChild
-                className="border-teal-500 text-teal-600 dark:text-teal-400 dark:border-teal-500 hover:text-white hover:bg-gradient-to-r hover:from-teal-600 hover:to-cyan-600 rounded-full px-8 py-6 text-base font-medium cursor-pointer"
+                className="border-teal-500 text-teal-600 dark:text-white dark:border-teal-500 hover:text-white! hover:bg-gradient-to-r hover:from-teal-600 hover:to-cyan-600 rounded-full px-8 py-6 text-base font-medium cursor-pointer"
               >
-                <a href="#about">Learn More</a>
+                <a href="#events">Learn Our Story</a>
               </Button>
             </div>
             <div className="pt-8 border-t border-gray-200 dark:border-gray-700">
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
                 {SITE.heroStatLabel}
               </p>
               <p className="text-4xl font-heading font-bold bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
-                {SITE.heroStat}
+                <AnimatedCounter end={1000} suffix="+" duration={2000} /> Youth
+                Reached
+              </p>
+
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+                Free sessions · Open to all youth · Kariobangi North
               </p>
             </div>
           </div>
@@ -944,7 +993,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── ABOUT ─────────────────────────────────────────── */}
+      {/* ── ABOUT ───────────────────────────────────────── */}
       <section
         id="about"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-violet-50/30 via-white to-teal-50/30 dark:from-violet-950/20 dark:via-gray-900 dark:to-teal-950/20"
@@ -961,8 +1010,12 @@ export default function Home() {
               <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
                 {ABOUT.body1}
               </p>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-8 italic">
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
                 {ABOUT.body2}
+              </p>
+              {/* Source: PowerPoint slide 3 — exact mission statement */}
+              <p className="text-gray-500 dark:text-gray-400 leading-relaxed mb-8 italic border-l-4 border-violet-300 dark:border-violet-700 pl-4">
+                "{ABOUT.mission}"
               </p>
               <div className="grid grid-cols-2 gap-5">
                 {VALUES.map(({ label, desc, color }, i) => {
@@ -971,7 +1024,7 @@ export default function Home() {
                   return (
                     <div
                       key={label}
-                      className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
+                      className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                     >
                       <div
                         className={`w-12 h-12 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center mb-4 shadow-md`}
@@ -1037,7 +1090,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── MISSION & VISION ────────────────────────────────────── */}
+      {/* ── MISSION & VISION ─────────────────────────────── */}
       <section className="py-32 px-6 lg:px-8 bg-gradient-to-br from-teal-50/30 via-white to-fuchsia-50/30 dark:from-teal-950/20 dark:via-gray-900 dark:to-fuchsia-950/20">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -1048,8 +1101,8 @@ export default function Home() {
               Mission & Vision
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Committed to fostering mental wellness and building resilient
-              communities.
+              Everything we do flows from two simple convictions — about art,
+              and about people.
             </p>
           </div>
 
@@ -1063,10 +1116,10 @@ export default function Home() {
                   <h3 className="font-heading font-bold text-2xl mb-4 text-gray-900 dark:text-white">
                     Our Mission
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                    To foster mental wellness, build resilient communities, and
-                    ensure that no one faces their challenges alone through
-                    creative expression and peer support.
+                  {/* Source: PowerPoint slide 3 — exact wording */}
+                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg font-medium">
+                    "To transform communities positively by utilising art as an
+                    agent of change."
                   </p>
                 </div>
                 <div className="p-8 lg:p-10 text-center">
@@ -1076,115 +1129,92 @@ export default function Home() {
                   <h3 className="font-heading font-bold text-2xl mb-4 text-gray-900 dark:text-white">
                     Our Vision
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                    A Nairobi where every young person has access to mental
-                    health support through art and music therapy, free from
-                    stigma.
+                  {/* Source: PowerPoint slide 3 — exact wording */}
+                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg font-medium">
+                    "Inspire to empower through art."
+                  </p>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm mt-4">
+                    A Nairobi where no young person faces mental health
+                    challenges alone — and where art is recognised as a tool for
+                    healing, not a luxury.
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
+          {/* Core Pillars — Source: PowerPoint slide 4 "Objectives" */}
           <div className="text-center mb-12">
             <p className="text-sm font-medium text-teal-600 dark:text-teal-400 mb-4 tracking-wide uppercase">
-              How We Do It
+              How We Work
             </p>
             <h3 className="font-heading font-bold text-3xl lg:text-4xl text-balance text-gray-900 dark:text-white">
-              Our Core Pillars
+              Our Objectives
             </h3>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center mb-4 shadow-md">
-                <Users className="w-6 h-6 text-white" />
+                <Megaphone className="w-6 h-6 text-white" />
               </div>
+              {/* Source: PowerPoint slide 4 — objective 1 */}
               <h4 className="font-heading font-semibold text-lg mb-2 text-gray-900 dark:text-white">
-                Support & Community
+                Address Social Ills
               </h4>
               <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                Creating safe spaces for sharing, understanding, and building
-                meaningful connections.
+                Address social ills resulting from mental health issues and
+                empower the community through education and sensitisation.
               </p>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center mb-4 shadow-md">
-                <Eye className="w-6 h-6 text-white" />
+                <Palette className="w-6 h-6 text-white" />
               </div>
+              {/* Source: PowerPoint slide 4 — objective 2 */}
               <h4 className="font-heading font-semibold text-lg mb-2 text-gray-900 dark:text-white">
-                Education & Awareness
+                Art as Therapy
               </h4>
               <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                Raising awareness, reducing stigma, and empowering through
-                education.
-              </p>
-            </div>
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-fuchsia-500 to-pink-500 flex items-center justify-center mb-4 shadow-md">
-                <Shield className="w-6 h-6 text-white" />
-              </div>
-              <h4 className="font-heading font-semibold text-lg mb-2 text-gray-900 dark:text-white">
-                Advocacy & Policy
-              </h4>
-              <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                Championing better mental health policies and improved access to
-                services.
-              </p>
-            </div>
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center mb-4 shadow-md">
-                <Users className="w-6 h-6 text-white" />
-              </div>
-              <h4 className="font-heading font-semibold text-lg mb-2 text-gray-900 dark:text-white">
-                Peer Mentorship
-              </h4>
-              <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                Connecting individuals with trained mentors based on lived
-                experience.
+                Use art as a therapeutic tool — creating a link between young
+                people and mental health professionals through creative
+                expression.
               </p>
             </div>
           </div>
 
+          {/* Future Goals — Source: PowerPoint slide 9 "Future Plans" */}
           <div className="mt-20 bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg">
             <div className="text-center mb-8">
               <h3 className="font-heading font-bold text-2xl lg:text-3xl text-balance text-gray-900 dark:text-white">
-                Looking Ahead
+                Future Plans
               </h3>
-              <p className="text-gray-500 dark:text-gray-400 mt-2">
-                Our commitment to expanding impact
+              <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm">
+                Where we are headed
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 {
-                  value: 10000,
-                  label: "Youth Reached",
-                  suffix: "+",
-                  icon: Users,
+                  icon: BookOpen,
                   color: "from-violet-500 to-fuchsia-500",
+                  // Source: PowerPoint slide 9 — exact future plan
+                  title: "School Clubs",
+                  desc: "Initiate Akili Yangu Raha Yangu clubs in primary and secondary schools across Nairobi.",
                 },
                 {
-                  value: 5,
-                  label: "Therapy Centers",
-                  suffix: "+",
-                  icon: Music2,
+                  icon: Users,
                   color: "from-teal-500 to-cyan-500",
+                  // Source: PowerPoint slide 9 — exact future plan
+                  title: "Referral Networks",
+                  desc: "Establish sustainable referral mechanisms and structures — links to psychotherapeutic institutions for young people in crisis.",
                 },
                 {
-                  value: 100,
-                  label: "Community Facilitators",
-                  suffix: "+",
-                  icon: Heart,
+                  icon: Music2,
                   color: "from-fuchsia-500 to-pink-500",
-                },
-                {
-                  value: 1,
-                  label: "Annual Festivals",
-                  suffix: "",
-                  icon: Calendar,
-                  color: "from-orange-500 to-amber-500",
-                  text: "Annual",
+                  // Source: PowerPoint slide 9 — exact future plan
+                  title: "Sufficient Resources",
+                  desc: "Secure sufficient resources — instruments, venues and materials — for a smooth and uninterrupted flow of all activities.",
                 },
               ].map((item, i) => (
                 <div key={i} className="text-center">
@@ -1193,19 +1223,11 @@ export default function Home() {
                   >
                     <item.icon className="w-5 h-5 text-white" />
                   </div>
-                  <p className="text-2xl font-heading font-bold bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
-                    {item.text ? (
-                      item.text
-                    ) : (
-                      <AnimatedCounter
-                        end={item.value}
-                        suffix={item.suffix}
-                        duration={2000}
-                      />
-                    )}
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {item.label}
+                  <h4 className="font-heading font-semibold text-base mb-2 text-gray-900 dark:text-white">
+                    {item.title}
+                  </h4>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+                    {item.desc}
                   </p>
                 </div>
               ))}
@@ -1214,7 +1236,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── SERVICES ──────────────────────────────────────── */}
+      {/* ── SERVICES ────────────────────────────────────── */}
+      {/* Source: PowerPoint slide 6 "What We Do" */}
       <section
         id="what-we-do"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-fuchsia-50/30 via-white to-violet-50/30 dark:from-fuchsia-950/20 dark:via-gray-900 dark:to-violet-950/20"
@@ -1222,24 +1245,29 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
             <p className="text-sm font-medium text-teal-600 dark:text-teal-400 mb-4 tracking-wide uppercase">
-              Our Services
+              What We Do
             </p>
             <h2 className="font-heading font-bold text-4xl lg:text-5xl text-balance mb-6 text-gray-900 dark:text-white">
-              How We Support Your Healing
+              Three Pathways to Healing
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Through evidence-based art and music therapy, we create safe
-              spaces for self-expression and mental wellness.
+              We don't offer therapy in the clinical sense. We offer something
+              just as powerful — a community that meets regularly, creates
+              together, and holds space for the full weight of what it means to
+              be young in Nairobi today.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {PROGRAMS.map(({ title, desc, sessions, gradient, bg }, i) => {
-              const icons = [Palette, Music2, Users];
-              const PIcon = icons[i];
+            {PROGRAMS.map(({ title, desc, sessions, gradient, bg }) => {
+              const icons = [Music2, Drama, Users];
+              const iconIdx = PROGRAMS.indexOf(
+                PROGRAMS.find((p) => p.title === title)!,
+              );
+              const PIcon = icons[iconIdx] || Palette;
               return (
                 <div
                   key={title}
-                  className={`p-8 rounded-3xl bg-gradient-to-br ${bg} border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group`}
+                  className={`p-8 rounded-3xl bg-gradient-to-br ${bg} border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2`}
                 >
                   <div
                     className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-6 shadow-lg`}
@@ -1258,7 +1286,9 @@ export default function Home() {
                         key={s}
                         className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400"
                       >
-                        <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 shrink-0" />
+                        <div
+                          className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${gradient} shrink-0`}
+                        />
                         {s}
                       </li>
                     ))}
@@ -1270,7 +1300,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── EVENTS ────────────────────────────────────────── */}
+      {/* ── EVENTS ──────────────────────────────────────── */}
       <section
         id="events"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-violet-50/30 via-white to-teal-50/30 dark:from-violet-950/20 dark:via-gray-900 dark:to-teal-950/20"
@@ -1281,13 +1311,30 @@ export default function Home() {
               2026 Annual Calendar
             </p>
             <h2 className="font-heading font-bold text-4xl lg:text-5xl text-balance mb-6 text-gray-900 dark:text-white">
-              Upcoming Events
+              The Year Ahead
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Stay connected with everything happening across The Sensations
-              community in 2026.
+              Every event we run is intentional. From prayer sessions that
+              ground us, to full concerts that move hundreds — this is the year
+              we go further.
             </p>
           </div>
+
+          <div className="bg-gradient-to-r from-violet-100 via-fuchsia-100 to-teal-100 dark:from-violet-950/50 dark:via-fuchsia-950/50 dark:to-teal-950/50 rounded-2xl px-6 py-4 mb-8 text-center border border-gray-100 dark:border-gray-700 shadow-md">
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              <span className="font-semibold">📅 Showing events for:</span>{" "}
+              {MONTHS[calMonth]} {new Date().getFullYear()}
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              {new Date().toLocaleDateString("default", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </p>
+          </div>
+
           <div className="flex items-center justify-between mb-6 bg-white dark:bg-gray-800 rounded-2xl px-6 py-4 border border-gray-100 dark:border-gray-700 shadow-md">
             <button
               onClick={() => setCalMonth((m) => Math.max(0, m - 1))}
@@ -1300,7 +1347,9 @@ export default function Home() {
               <p className="font-heading font-bold text-xl text-gray-900 dark:text-white">
                 {MONTHS[calMonth]}
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">2026</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                {new Date().getFullYear()}
+              </p>
             </div>
             <button
               onClick={() => setCalMonth((m) => Math.min(11, m + 1))}
@@ -1310,42 +1359,50 @@ export default function Home() {
               <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             </button>
           </div>
+
           <div className="flex flex-wrap gap-2 mb-10 justify-center">
             {MONTHS.map((m, i) => {
               const has = CALENDAR_EVENTS.some((e) => e.month === m);
+              const isCurrentMonth = new Date().getMonth() === i;
               return (
                 <button
                   key={m}
                   onClick={() => setCalMonth(i)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition cursor-pointer ${
-                    i === calMonth
-                      ? "bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-md"
-                      : has
-                        ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-violet-300 dark:hover:border-violet-700 text-gray-700 dark:text-gray-300 shadow-sm"
-                        : "bg-gray-50 dark:bg-gray-800/50 text-gray-400 dark:text-gray-500"
-                  }`}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition cursor-pointer ${i === calMonth ? "bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-md" : has ? `bg-white dark:bg-gray-800 border ${isCurrentMonth ? "border-teal-400 dark:border-teal-600 ring-2 ring-teal-400/50" : "border-gray-200 dark:border-gray-700 hover:border-violet-300"} text-gray-700 dark:text-gray-300 shadow-sm` : "bg-gray-50 dark:bg-gray-800/50 text-gray-400 dark:text-gray-500"}`}
                 >
                   {m.slice(0, 3)}
                   {has && i !== calMonth && (
                     <span className="ml-1 inline-block w-1.5 h-1.5 rounded-full bg-violet-500 align-middle" />
                   )}
+                  {isCurrentMonth && i !== calMonth && (
+                    <span className="ml-1 text-[10px]">●</span>
+                  )}
                 </button>
               );
             })}
           </div>
+
           {monthEvents.length === 0 ? (
             <div className="text-center py-16 text-gray-500 dark:text-gray-400">
               <Calendar className="w-12 h-12 mx-auto mb-4 opacity-30" />
               <p className="font-medium">
                 No events scheduled for {MONTHS[calMonth]}
               </p>
+              {calMonth !== new Date().getMonth() && (
+                <button
+                  onClick={() => setCalMonth(new Date().getMonth())}
+                  className="mt-4 text-sm text-violet-600 dark:text-violet-400 hover:underline"
+                >
+                  ← Jump to current month ({MONTHS[new Date().getMonth()]})
+                </button>
+              )}
             </div>
           ) : (
             <div className="space-y-4">
               {monthEvents.map((ev, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-5 bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:border-violet-200 dark:hover:border-violet-800 transition-all"
+                  className={`flex items-center gap-5 bg-white dark:bg-gray-800 rounded-2xl p-5 border transition-all ${calMonth === new Date().getMonth() ? "border-violet-200 dark:border-violet-800 shadow-lg hover:shadow-xl" : "border-gray-100 dark:border-gray-700 hover:shadow-xl hover:border-violet-200"}`}
                 >
                   <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-violet-100 to-fuchsia-100 dark:from-violet-950/50 dark:to-fuchsia-950/50 rounded-xl flex flex-col items-center justify-center shadow-sm">
                     <Calendar className="w-4 h-4 text-violet-600 dark:text-violet-400 mb-1" />
@@ -1358,7 +1415,7 @@ export default function Home() {
                       {ev.title}
                     </h3>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                      {ev.month} 2026
+                      {ev.month} {new Date().getFullYear()}
                     </p>
                   </div>
                   <span
@@ -1370,9 +1427,22 @@ export default function Home() {
               ))}
             </div>
           )}
+
+          {calMonth !== new Date().getMonth() && monthEvents.length > 0 && (
+            <div className="text-center mt-6">
+              <button
+                onClick={() => setCalMonth(new Date().getMonth())}
+                className="text-sm text-violet-600 dark:text-violet-400 hover:underline inline-flex items-center gap-1"
+              >
+                <Calendar className="w-3 h-3" /> Jump to current month (
+                {MONTHS[new Date().getMonth()]})
+              </button>
+            </div>
+          )}
+
           <div className="mt-12 bg-gradient-to-r from-violet-100 via-fuchsia-100 to-teal-100 dark:from-violet-950/50 dark:via-fuchsia-950/50 dark:to-teal-950/50 rounded-2xl p-6 text-center border border-gray-100 dark:border-gray-700 shadow-md">
             <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
-              Total events in 2026
+              Total events in {new Date().getFullYear()}
             </p>
             <p className="font-heading font-bold text-3xl bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
               {CALENDAR_EVENTS.length}
@@ -1384,7 +1454,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── IMPACT ────────────────────────────────────────── */}
+      {/* ── IMPACT ──────────────────────────────────────── */}
+      {/* Source: PowerPoint slide 7 + Annual Report conclusion */}
       <section
         id="impact"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-teal-50/30 via-white to-fuchsia-50/30 dark:from-teal-950/20 dark:via-gray-900 dark:to-fuchsia-950/20"
@@ -1395,7 +1466,7 @@ export default function Home() {
               <Image
                 key={src}
                 src={src}
-                alt="Community healing"
+                alt="Community healing session"
                 fill
                 className={`object-cover transition-opacity duration-1000 ${idx === currentImpactImage ? "opacity-100" : "opacity-0"}`}
               />
@@ -1415,10 +1486,10 @@ export default function Home() {
               Our Impact
             </p>
             <h2 className="font-heading font-bold text-4xl lg:text-5xl mb-8 text-balance text-gray-900 dark:text-white">
-              Transforming Lives Through Creative Expression
+              Real Change. Real Numbers. Real People.
             </h2>
             <div className="grid grid-cols-2 gap-6 mb-12">
-              {IMPACT_STATS.map(({ value, label, suffix, color }, i) => (
+              {IMPACT_STATS.map(({ value, label, suffix, color, display }) => (
                 <div
                   key={label}
                   className="bg-white dark:bg-gray-800 rounded-2xl p-5 text-center shadow-md hover:shadow-xl transition-all"
@@ -1426,11 +1497,15 @@ export default function Home() {
                   <p
                     className={`text-4xl font-heading font-bold bg-gradient-to-r ${color} bg-clip-text text-transparent`}
                   >
-                    <AnimatedCounter
-                      end={value}
-                      suffix={suffix}
-                      duration={2000}
-                    />
+                    {display ? (
+                      display
+                    ) : (
+                      <AnimatedCounter
+                        end={value}
+                        suffix={suffix}
+                        duration={2000}
+                      />
+                    )}
                   </p>
                   <p className="text-gray-600 dark:text-gray-300 mt-2 text-sm">
                     {label}
@@ -1438,8 +1513,14 @@ export default function Home() {
                 </div>
               ))}
             </div>
+
             <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-8">
               {IMPACT_BODY}
+            </p>
+            {/* Source: PowerPoint slide 7 — "hope is alive as we get to use art as a form of expression" */}
+            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-8 italic border-l-4 border-teal-300 dark:border-teal-700 pl-4">
+              "Through sensitisation and education, hope is alive — as we use
+              art as a form of expression to address psychological issues."
             </p>
             <Button
               onClick={openJoin}
@@ -1452,7 +1533,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── GALLERY TEASER (marquee rows) ─────────────────── */}
+      {/* ── GALLERY TEASER ──────────────────────────────── */}
       <section
         id="gallery"
         className="py-32 bg-gradient-to-br from-fuchsia-50/30 via-white to-violet-50/30 dark:from-fuchsia-950/20 dark:via-gray-900 dark:to-violet-950/20 overflow-hidden"
@@ -1465,8 +1546,8 @@ export default function Home() {
             Stories Told Through Art & Sound
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Explore the transformative power of creative expression from our
-            community sessions.
+            Moments of healing, creativity and community — captured across
+            Nairobi since August 2022.
           </p>
         </div>
         <div className="overflow-hidden mb-3">
@@ -1486,7 +1567,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── TESTIMONIALS ──────────────────────────────────── */}
+      {/* ── TESTIMONIALS ────────────────────────────────── */}
       <section
         id="testimonials"
         className="py-32 bg-gradient-to-br from-fuchsia-50/30 via-white to-violet-50/30 dark:from-fuchsia-950/20 dark:via-gray-900 dark:to-violet-950/20"
@@ -1494,10 +1575,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-20">
             <p className="text-sm font-medium text-teal-600 dark:text-teal-400 mb-4 tracking-wide uppercase">
-              Voices of Transformation
+              Voices from the Community
             </p>
             <h2 className="font-heading font-bold text-4xl lg:text-5xl text-balance mb-6 text-gray-900 dark:text-white">
-              Hear From Our Community
+              What Young People Are Saying
             </h2>
           </div>
           <div className="bg-gradient-to-br from-violet-200/80 via-purple-100/80 to-fuchsia-100/80 dark:from-violet-950/60 dark:via-purple-950/60 dark:to-fuchsia-950/60 backdrop-blur-sm rounded-3xl p-12 mb-8 min-h-[320px] flex items-center justify-center shadow-xl border border-violet-200/50 dark:border-violet-800/50">
@@ -1554,7 +1635,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── TEAM ──────────────────────────────────────────── */}
+      {/* ── TEAM ────────────────────────────────────────── */}
+      {/* Source: Annual Report cover page — names confirmed */}
       <section
         id="team"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-violet-50/30 via-white to-teal-50/30 dark:from-violet-950/20 dark:via-gray-900 dark:to-teal-950/20"
@@ -1565,15 +1647,15 @@ export default function Home() {
               The People Behind It
             </p>
             <h2 className="font-heading font-bold text-4xl lg:text-5xl text-balance mb-6 text-gray-900 dark:text-white">
-              Meet Our Team
+              Meet The Sensations
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              A passionate group of therapists, artists, musicians, and
-              community builders dedicated to youth healing.
+              The Sensations is led by a small, passionate core team of young
+              Nairobians who believe deeply in the power of art and community.
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-            {TEAM.slice(0, 4).map(({ initials, name, role, gradient }, i) => (
+            {TEAM.slice(0, 4).map(({ initials, name, role, gradient }) => (
               <div key={name} className="text-center group">
                 <div
                   className={`w-28 h-28 rounded-3xl bg-gradient-to-br ${gradient} flex items-center justify-center mx-auto mb-5 shadow-lg group-hover:scale-105 transition-transform group-hover:shadow-xl`}
@@ -1592,7 +1674,7 @@ export default function Home() {
             ))}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-            {TEAM.slice(4, 7).map(({ initials, name, role, gradient }, i) => (
+            {TEAM.slice(4, 7).map(({ initials, name, role, gradient }) => (
               <div key={name} className="text-center group">
                 <div
                   className={`w-28 h-28 rounded-3xl bg-gradient-to-br ${gradient} flex items-center justify-center mx-auto mb-5 shadow-lg group-hover:scale-105 transition-transform group-hover:shadow-xl`}
@@ -1610,13 +1692,16 @@ export default function Home() {
               </div>
             ))}
           </div>
+          {/* Source: Annual Report — "Conduct auditions to recruit new artists" */}
           <div className="bg-gradient-to-r from-violet-100 via-fuchsia-100 to-teal-100 dark:from-violet-950/50 dark:via-fuchsia-950/50 dark:to-teal-950/50 rounded-3xl p-8 text-center border border-gray-100 dark:border-gray-700 shadow-lg mt-16">
             <h3 className="font-heading font-bold text-xl mb-2 text-gray-900 dark:text-white">
-              Want to Volunteer or Collaborate?
+              Join the Team
             </h3>
             <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-lg mx-auto text-sm">
-              We're always looking for therapists, artists, musicians, and
-              community champions to join the Sensations family.
+              We are always looking for musicians, artists, mental health
+              advocates, event coordinators, and people who simply want to show
+              up and help. If you believe in what we do, there is a place for
+              you here.
             </p>
             <Button
               onClick={openJoin}
@@ -1628,15 +1713,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── NEWSLETTER ────────────────────────────────────── */}
+      {/* ── NEWSLETTER ──────────────────────────────────── */}
       <section className="py-20 px-6 lg:px-8 bg-gradient-to-r from-violet-100 via-fuchsia-100 to-teal-100 dark:from-violet-950/50 dark:via-fuchsia-950/50 dark:to-teal-950/50">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-sm font-medium text-teal-600 dark:text-teal-400 mb-4 tracking-wide uppercase">
-            Stay Connected
+            Stay in the Loop
           </p>
-
           <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl overflow-hidden shadow-2xl border border-gray-100 dark:border-gray-700">
-            {/* Image at the top center */}
             <div className="relative w-full h-64 md:h-80">
               <NextImage
                 src="/community-healing.jpg"
@@ -1646,17 +1729,14 @@ export default function Home() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
             </div>
-
-            {/* Content padding */}
             <div className="p-10 md:p-12">
               <h2 className="font-heading font-bold text-3xl lg:text-4xl mb-4 text-gray-900 dark:text-white">
                 Join the Sensations Community
               </h2>
               <p className="text-gray-600 dark:text-gray-300 mb-8">
-                Get updates on sessions, events and healing resources. No spam,
-                ever.
+                Get updates on sessions, concerts, free classes and mental
+                health resources. We send what matters — nothing more.
               </p>
-
               <form
                 onSubmit={async (e) => {
                   e.preventDefault();
@@ -1692,11 +1772,9 @@ export default function Home() {
                   type="submit"
                   className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:shadow-xl text-white rounded-full px-8 py-3 font-medium transition-all duration-200 whitespace-nowrap shadow-md"
                 >
-                  Subscribe
+                  Subscribe Free
                 </Button>
               </form>
-
-              {/* Extra trust badges */}
               <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs text-gray-500 dark:text-gray-400">
                 <div className="flex items-center gap-1">
                   <CheckCircle className="w-4 h-4 text-green-500" />
@@ -1704,11 +1782,11 @@ export default function Home() {
                 </div>
                 <div className="flex items-center gap-1">
                   <Users className="w-4 h-4 text-violet-500" />
-                  <span>1,000+ subscribers</span>
+                  <span>1,000+ young people</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Mail className="w-4 h-4 text-teal-500" />
-                  <span>Weekly updates</span>
+                  <span>Unsubscribe anytime</span>
                 </div>
               </div>
             </div>
@@ -1716,7 +1794,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── CONTACT ───────────────────────────────────────── */}
+      {/* ── CONTACT ─────────────────────────────────────── */}
+      {/* Source: Annual Report cover — email, phone confirmed */}
       <section
         id="contact"
         className="py-32 px-6 lg:px-8 bg-gradient-to-br from-teal-50/30 via-white to-fuchsia-50/30 dark:from-teal-950/20 dark:via-gray-900 dark:to-fuchsia-950/20"
@@ -1727,10 +1806,12 @@ export default function Home() {
               Get In Touch
             </p>
             <h2 className="font-heading font-bold text-4xl lg:text-5xl text-balance mb-6 text-gray-900 dark:text-white">
-              Connect With Us
+              We'd Love to Hear From You
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300">
-              Have questions? Ready to join? We'd love to hear from you.
+              Whether you want to join a session, partner with us, support our
+              work or simply find out more — reach out. We respond to every
+              message.
             </p>
           </div>
           <form
@@ -1760,7 +1841,7 @@ export default function Home() {
                 </label>
                 <input
                   type="email"
-                  placeholder="your.email@example.com"
+                  placeholder="your@email.com"
                   required
                   value={contactForm.email}
                   disabled={contactLoading}
@@ -1777,7 +1858,7 @@ export default function Home() {
               </label>
               <input
                 type="text"
-                placeholder="How can we help?"
+                placeholder="What's this about?"
                 value={contactForm.subject}
                 disabled={contactLoading}
                 onChange={(e) =>
@@ -1792,7 +1873,7 @@ export default function Home() {
               </label>
               <textarea
                 rows={5}
-                placeholder="Tell us about your interest in joining or any questions you have..."
+                placeholder="Tell us what's on your mind..."
                 required
                 value={contactForm.message}
                 disabled={contactLoading}
@@ -1826,13 +1907,13 @@ export default function Home() {
             {[
               {
                 Icon: Heart,
-                title: "Location",
+                title: "Find Us",
                 detail: SITE.location,
                 gradient: "from-violet-500 to-fuchsia-500",
               },
               {
-                Icon: Music2,
-                title: "Email",
+                Icon: Mail,
+                title: "Email Us",
                 detail: SITE.email,
                 href: `mailto:${SITE.email}`,
                 gradient: "from-teal-500 to-cyan-500",
@@ -1875,7 +1956,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── GET INVOLVED CTA ──────────────────────────────── */}
+      {/* ── GET INVOLVED CTA ────────────────────────────── */}
       <section
         id="get-involved"
         className="py-32 px-6 lg:px-8 max-w-4xl mx-auto text-center"
@@ -1884,11 +1965,12 @@ export default function Home() {
           Ready to Begin?
         </p>
         <h2 className="font-heading font-bold text-4xl lg:text-5xl mb-8 text-balance text-gray-900 dark:text-white">
-          Your Journey to Healing Starts Now
+          Your Seat at the Table is Waiting
         </h2>
         <p className="text-lg text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto">
-          Whether you're looking for art therapy, music healing, or simply a
-          supportive community, we're here for you.
+          Whether you're a young person looking for a safe space, a professional
+          who wants to contribute, or an organisation that sees the value in
+          this work — there is a role for you in The Sensations.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button
@@ -1901,14 +1983,14 @@ export default function Home() {
           <Button
             variant="outline"
             asChild
-            className="border-teal-500 text-teal-600 dark:text-teal-400 dark:border-teal-500 hover:text-white hover:bg-gradient-to-r hover:from-teal-600 hover:to-cyan-600 rounded-full px-8 py-6 text-base font-medium cursor-pointer"
+            className="border-teal-500 text-teal-600 dark:text-white dark:border-teal-500 hover:text-white! hover:bg-gradient-to-r hover:from-teal-600 hover:to-cyan-600 rounded-full px-8 py-6 text-base font-medium cursor-pointer"
           >
             <a href="#events">View 2026 Events</a>
           </Button>
         </div>
       </section>
 
-      {/* ── JOIN MODAL ────────────────────────────────────── */}
+      {/* ── JOIN MODAL ──────────────────────────────────── */}
       {joinOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
           <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 max-w-md w-full shadow-2xl relative max-h-[90vh] overflow-y-auto">
@@ -1942,12 +2024,12 @@ export default function Home() {
                   Join The Sensations
                 </h3>
                 <p className="text-gray-500 dark:text-gray-400 text-sm mb-8">
-                  How would you like to be part of the community?
+                  Tell us how you'd like to be part of the work.
                 </p>
                 <div className="grid grid-cols-1 gap-4">
                   <button
                     onClick={() => setJoinType("member")}
-                    className="flex items-start gap-4 p-5 rounded-2xl border-2 border-gray-100 dark:border-gray-700 hover:border-violet-300 dark:hover:border-violet-700 hover:bg-violet-50 dark:hover:bg-violet-950/30 transition text-left cursor-pointer group shadow-sm hover:shadow-md"
+                    className="flex items-start gap-4 p-5 rounded-2xl border-2 border-gray-100 dark:border-gray-700 hover:border-violet-300 dark:hover:border-violet-700 hover:bg-violet-50 dark:hover:bg-violet-950/30 transition text-left cursor-pointer shadow-sm hover:shadow-md"
                   >
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center shrink-0 shadow-md">
                       <Users className="w-6 h-6 text-white" />
@@ -1957,25 +2039,27 @@ export default function Home() {
                         Join as a Member
                       </p>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Participate in sessions, events, and the healing
-                        community as a youth member or therapist.
+                        Come to sessions, perform, heal, grow. Whether you're a
+                        musician, an artist, or simply someone who needs
+                        community — you belong here.
                       </p>
                     </div>
                   </button>
                   <button
                     onClick={() => setJoinType("sponsor")}
-                    className="flex items-start gap-4 p-5 rounded-2xl border-2 border-gray-100 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-700 hover:bg-teal-50 dark:hover:bg-teal-950/30 transition text-left cursor-pointer group shadow-sm hover:shadow-md"
+                    className="flex items-start gap-4 p-5 rounded-2xl border-2 border-gray-100 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-700 hover:bg-teal-50 dark:hover:bg-teal-950/30 transition text-left cursor-pointer shadow-sm hover:shadow-md"
                   >
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center shrink-0 shadow-md">
                       <Heart className="w-6 h-6 text-white" />
                     </div>
                     <div>
                       <p className="font-heading font-bold mb-1 text-gray-900 dark:text-white">
-                        Support as a Sponsor
+                        Support as a Partner or Sponsor
                       </p>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Partner with us financially or in-kind to fund sessions,
-                        events, and outreach across Nairobi.
+                        Help fund sessions, concerts, instruments and resources.
+                        Your support directly puts tools and safe spaces in the
+                        hands of young people who need them.
                       </p>
                     </div>
                   </button>
@@ -1996,8 +2080,8 @@ export default function Home() {
                 </h3>
                 <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
                   {joinType === "member"
-                    ? "Fill in your details and we'll reach out within 48 hours."
-                    : "Tell us about yourself or your organisation and we'll be in touch."}
+                    ? "Fill in your details and we'll reach out within 48 hours. All backgrounds welcome."
+                    : "Tell us about yourself or your organisation. We'll be in touch to explore how we can work together."}
                 </p>
                 <form onSubmit={handleJoinSubmit} className="space-y-4">
                   <div>
@@ -2075,8 +2159,8 @@ export default function Home() {
                       required
                       placeholder={
                         joinType === "member"
-                          ? "Tell us a bit about yourself and your interest…"
-                          : "Tell us about your sponsorship interest, capacity, or ideas…"
+                          ? "Tell us a bit about yourself — what draws you to The Sensations, what you're looking for, or what you'd like to contribute…"
+                          : "Tell us about your sponsorship interest — financial, in-kind, professional services, or something else entirely…"
                       }
                       value={joinForm.message}
                       disabled={joinLoading}
@@ -2095,11 +2179,7 @@ export default function Home() {
                   <Button
                     type="submit"
                     disabled={joinLoading}
-                    className={`w-full text-white rounded-full py-3 font-medium shadow-md transition-all cursor-pointer ${
-                      joinType === "member"
-                        ? "bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:shadow-xl"
-                        : "bg-gradient-to-r from-teal-600 to-cyan-600 hover:shadow-xl"
-                    }`}
+                    className={`w-full text-white rounded-full py-3 font-medium shadow-md transition-all cursor-pointer ${joinType === "member" ? "bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:shadow-xl" : "bg-gradient-to-r from-teal-600 to-cyan-600 hover:shadow-xl"}`}
                   >
                     {joinLoading
                       ? "Submitting…"
@@ -2114,7 +2194,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* ── FOOTER ────────────────────────────────────────── */}
+      {/* ── FOOTER ──────────────────────────────────────── */}
       <footer className="border-t border-gray-100 dark:border-gray-800 bg-gradient-to-br from-violet-100 via-fuchsia-100 to-teal-100 dark:from-violet-950/30 dark:via-fuchsia-950/30 dark:to-teal-950/30 py-16 px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 mb-12">
@@ -2125,17 +2205,20 @@ export default function Home() {
               <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line">
                 {SITE.footerTagline}
               </p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+                Active since August 2022
+              </p>
             </div>
             <div>
               <p className="text-sm font-medium font-heading mb-4 text-gray-700 dark:text-gray-300">
                 Navigate
               </p>
-              <ul className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
+              <ul className="space-y-2 text-sm">
                 {NAV_LINKS.map(({ label, href }) => (
                   <li key={href}>
                     <a
                       href={href}
-                      className="hover:text-violet-600 dark:hover:text-violet-400 transition cursor-pointer"
+                      className="text-gray-500! no-underline hover:text-violet-600! transition cursor-pointer"
                     >
                       {label}
                     </a>
@@ -2147,19 +2230,19 @@ export default function Home() {
               <p className="text-sm font-medium font-heading mb-4 text-gray-700 dark:text-gray-300">
                 Services
               </p>
-              <ul className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
+              <ul className="space-y-2 text-sm">
                 {[
-                  "Art Therapy",
-                  "Music Therapy",
-                  "Group Healing Circles",
-                  "Mental Health Workshops",
-                  "Community Events",
-                  "Youth Counseling",
+                  "Mental Health Concerts",
+                  "Art Therapy Sessions",
+                  "Free Music Classes",
+                  "Community Webinars",
+                  "School Outreach",
+                  "Referral Support",
                 ].map((s) => (
                   <li key={s}>
                     <a
                       href="#what-we-do"
-                      className="hover:text-violet-600 dark:hover:text-violet-400 transition cursor-pointer"
+                      className="text-gray-500! no-underline hover:text-violet-600! transition cursor-pointer"
                     >
                       {s}
                     </a>
@@ -2171,15 +2254,15 @@ export default function Home() {
               <p className="text-sm font-medium font-heading mb-4 text-gray-700 dark:text-gray-300">
                 Connect
               </p>
-              <ul className="space-y-3 text-sm text-gray-500 dark:text-gray-400">
+              <ul className="space-y-3 text-sm">
                 <li>
                   <a
                     href="https://www.instagram.com/sensation9291"
-                    className="flex items-center gap-2 hover:text-violet-600 dark:hover:text-violet-400 transition cursor-pointer group"
+                    className="flex items-center gap-2 text-gray-500! no-underline hover:text-violet-600! transition cursor-pointer group"
                   >
                     <Instagram
                       size={18}
-                      className="group-hover:scale-110 transition-transform"
+                      className="group-hover:scale-110 transition-transform text-gray-500! group-hover:text-violet-600!"
                     />
                     Instagram
                   </a>
@@ -2189,7 +2272,7 @@ export default function Home() {
                     href="https://www.tiktok.com/@the.sensation0"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 hover:text-violet-600 dark:hover:text-violet-400 transition cursor-pointer group"
+                    className="flex items-center gap-2 text-gray-500! no-underline hover:text-violet-600! transition cursor-pointer group"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -2197,6 +2280,7 @@ export default function Home() {
                       height="18"
                       viewBox="0 0 24 24"
                       fill="currentColor"
+                      className="text-gray-500! group-hover:text-violet-600! transition"
                     >
                       <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z" />
                     </svg>
@@ -2206,9 +2290,12 @@ export default function Home() {
                 <li>
                   <a
                     href={`mailto:${SITE.email}`}
-                    className="flex items-center gap-2 hover:text-violet-600 dark:hover:text-violet-400 transition cursor-pointer"
+                    className="flex items-center gap-2 text-gray-500! no-underline hover:text-violet-600! transition cursor-pointer"
                   >
-                    <Mail size={18} />
+                    <Mail
+                      size={18}
+                      className="text-gray-500! hover:text-violet-600! transition"
+                    />
                     Email Us
                   </a>
                 </li>
@@ -2218,9 +2305,8 @@ export default function Home() {
               <p className="text-sm font-medium font-heading mb-4 text-gray-700 dark:text-gray-300">
                 Based in
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                {SITE.location}
-              </p>
+              <p className="text-sm text-gray-500! mb-1">{SITE.location}</p>
+              <p className="text-xs text-gray-400! mb-4">{SITE.phone}</p>
               <button
                 onClick={openJoin}
                 className="px-5 py-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white text-sm font-medium rounded-full hover:shadow-lg transition-all shadow-md cursor-pointer"
@@ -2229,7 +2315,7 @@ export default function Home() {
               </button>
             </div>
           </div>
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-8 text-center text-sm text-gray-500 dark:text-gray-400">
+          <div className="border-t border-gray-200 dark:border-gray-700 pt-8 text-center text-sm text-gray-500!">
             <p>{SITE.copyright}</p>
           </div>
         </div>

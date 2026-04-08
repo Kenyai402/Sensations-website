@@ -10,8 +10,6 @@ export default function ThemeToggle() {
 
   useEffect(() => setMounted(true), []);
 
-  // Before mount: render a visible placeholder assuming light mode (your default).
-  // This means the button is always in the DOM — no invisible gap in the navbar.
   const isDark = mounted ? theme === "dark" : false;
 
   return (
@@ -35,17 +33,13 @@ export default function ThemeToggle() {
             : "inset 0 1px 3px rgba(0,0,0,0.1)",
         }}
       >
-        {/* Thumb */}
+        {/* Thumb - Updated with bg-violet-500 */}
         <div
-          className="absolute top-0.5 flex items-center justify-center w-5 h-5 rounded-full"
+          className="absolute top-0.5 flex items-center justify-center w-5 h-5 rounded-full bg-violet-500 transition-all duration-300"
           style={{
             left: isDark ? "calc(100% - 22px)" : "2px",
-            transition: "left 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease",
-            background: isDark
-              ? "linear-gradient(135deg, oklch(0.72 0.18 281), oklch(0.60 0.22 281))"
-              : "linear-gradient(135deg, oklch(0.62 0.14 290), oklch(0.52 0.20 281))",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.25)",
-            color: "white",
+            transition: "left 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)",
+            boxShadow: "0 2px 8px rgba(139, 92, 246, 0.4)",
           }}
         >
           {isDark ? (
