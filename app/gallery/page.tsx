@@ -4,48 +4,53 @@ import { useState } from "react";
 import NextImage from "next/image";
 import Link from "next/link";
 import { ArrowLeft, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useTheme } from "next-themes";
 
 const GALLERY_IMAGES = [
-  { src: "/gallery1.jpg",   cat: "Community"   },
-  { src: "/gallery2.jpg",   cat: "Community"   },
-  { src: "/gallery3.jpg",   cat: "Performance" },
-  { src: "/gallery4.jpg",   cat: "Performance" },
-  { src: "/gallery5.jpg",   cat: "Community"   },
-  { src: "/gallery6.jpg",   cat: "Performance" },
-  { src: "/gallery7.jpg",   cat: "Community"   },
-  { src: "/gallery8.jpg",   cat: "Performance" },
-  { src: "/gallery9.jpeg",  cat: "Team"        },
-  { src: "/gallery10.jpeg", cat: "Community"   },
+  { src: "/gallery1.jpg", cat: "Community" },
+  { src: "/gallery2.jpg", cat: "Community" },
+  { src: "/gallery3.jpg", cat: "Performance" },
+  { src: "/gallery4.jpg", cat: "Performance" },
+  { src: "/gallery5.jpg", cat: "Community" },
+  { src: "/gallery6.jpg", cat: "Performance" },
+  { src: "/gallery7.jpg", cat: "Community" },
+  { src: "/gallery8.jpg", cat: "Performance" },
+  { src: "/gallery9.jpeg", cat: "Team" },
+  { src: "/gallery10.jpeg", cat: "Community" },
   { src: "/gallery11.jpeg", cat: "Performance" },
-  { src: "/gallery12.jpeg", cat: "Community"   },
+  { src: "/gallery12.jpeg", cat: "Community" },
   { src: "/gallery13.jpeg", cat: "Performance" },
-  { src: "/gallery14.jpeg", cat: "Community"   },
-  { src: "/gallery15.jpeg", cat: "Team"        },
+  { src: "/gallery14.jpeg", cat: "Community" },
+  { src: "/gallery15.jpeg", cat: "Team" },
   { src: "/gallery16.jpeg", cat: "Performance" },
-  { src: "/gallery17.jpeg", cat: "Community"   },
+  { src: "/gallery17.jpeg", cat: "Community" },
   { src: "/gallery18.jpeg", cat: "Performance" },
-  { src: "/gallery19.jpeg", cat: "Community"   },
-  { src: "/gallery20.jpeg", cat: "Team"        },
+  { src: "/gallery19.jpeg", cat: "Community" },
+  { src: "/gallery20.jpeg", cat: "Team" },
   { src: "/gallery21.jpeg", cat: "Performance" },
-  { src: "/gallery22.jpeg", cat: "Community"   },
+  { src: "/gallery22.jpeg", cat: "Community" },
   { src: "/gallery23.jpeg", cat: "Performance" },
-  { src: "/gallery24.jpeg", cat: "Community"   },
-  { src: "/gallery25.jpeg", cat: "Team"        },
+  { src: "/gallery24.jpeg", cat: "Community" },
+  { src: "/gallery25.jpeg", cat: "Team" },
   { src: "/gallery26.jpeg", cat: "Performance" },
-  { src: "/gallery27.jpeg", cat: "Community"   },
+  { src: "/gallery27.jpeg", cat: "Community" },
   { src: "/gallery28.jpeg", cat: "Performance" },
-  { src: "/gallery29.jpeg", cat: "Community"   },
-  { src: "/gallery30.jpeg", cat: "Team"        },
+  { src: "/gallery29.jpeg", cat: "Community" },
+  { src: "/gallery30.jpeg", cat: "Team" },
   { src: "/gallery31.jpeg", cat: "Performance" },
-  { src: "/gallery32.jpeg", cat: "Community"   },
+  { src: "/gallery32.jpeg", cat: "Community" },
   { src: "/gallery33.jpeg", cat: "Performance" },
-  { src: "/gallery34.jpeg", cat: "Community"   },
-  { src: "/gallery35.jpeg", cat: "Team"        },
+  { src: "/gallery34.jpeg", cat: "Community" },
+  { src: "/gallery35.jpeg", cat: "Team" },
   { src: "/gallery36.jpeg", cat: "Performance" },
-  { src: "/gallery37.jpeg", cat: "Community"   },
+  { src: "/gallery37.jpeg", cat: "Community" },
   { src: "/gallery38.jpeg", cat: "Performance" },
-  { src: "/gallery39.jpg",  cat: "Community"   },
-  { src: "/gallery40.jpg",  cat: "Team"        },
+  { src: "/gallery39.jpg", cat: "Community" },
+  { src: "/gallery40.jpg", cat: "Performance" },
+  { src: "/gallery41.jpeg", cat: "Performance" },
+  { src: "/gallery42.jpeg", cat: "Performance" },
+  { src: "/gallery43.jpeg", cat: "Performance" },
+  { src: "/gallery44.jpeg", cat: "Performance" },
 ];
 
 const CATEGORIES = ["All", "Performance", "Community", "Team"];
@@ -56,13 +61,9 @@ const col2 = GALLERY_IMAGES.slice(10, 20);
 const col3 = GALLERY_IMAGES.slice(20, 30);
 const col4 = GALLERY_IMAGES.slice(30, 40);
 
+
 /* ─────────────────────────────────────────────────────────────────
    INFINITE SCROLL COLUMN
-   Each column doubles its images for a seamless loop.
-   The CSS animation moves the strip up by 50% (= one full set),
-   then snaps back invisibly ,creating endless motion.
-   reverse=true plays the animation backwards so the column
-   scrolls downward instead of upward.
    ───────────────────────────────────────────────────────────────── */
 function InfiniteColumn({
   images,
@@ -81,7 +82,7 @@ function InfiniteColumn({
         flex: 1,
         display: "flex",
         flexDirection: "column",
-        gap: 10,
+        gap: 12,
         animationName: "gallery-scroll-up",
         animationDuration: `${duration}s`,
         animationTimingFunction: "linear",
@@ -94,14 +95,16 @@ function InfiniteColumn({
         <div
           key={`${img.src}-${i}`}
           style={{
-            position: "relative",   /* REQUIRED for next/image fill */
+            position: "relative",
             width: "100%",
             aspectRatio: "3 / 4",
-            borderRadius: 14,
+            borderRadius: 16,
             overflow: "hidden",
             flexShrink: 0,
-            background: "oklch(0.25 0.04 270)",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+            transition: "transform 0.3s ease, box-shadow 0.3s ease",
           }}
+          className="infinite-col-image"
         >
           <NextImage
             src={img.src}
@@ -110,6 +113,32 @@ function InfiniteColumn({
             sizes="(max-width: 768px) 50vw, 25vw"
             className="object-cover"
           />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%)",
+              opacity: 0,
+              transition: "opacity 0.3s ease",
+              display: "flex",
+              alignItems: "flex-end",
+              padding: "12px",
+            }}
+            className="infinite-col-overlay"
+          >
+            <span
+              style={{
+                padding: "4px 12px",
+                borderRadius: 20,
+                background: "linear-gradient(135deg, #8b5cf6, #d946ef)",
+                color: "white",
+                fontSize: "0.7rem",
+                fontWeight: 600,
+              }}
+            >
+              {img.cat}
+            </span>
+          </div>
         </div>
       ))}
     </div>
@@ -118,6 +147,8 @@ function InfiniteColumn({
 
 /* MAIN GALLERY PAGE */
 export default function GalleryPage() {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
   const [activeCategory, setActiveCategory] = useState("All");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
@@ -132,13 +163,10 @@ export default function GalleryPage() {
       i !== null ? (i - 1 + filtered.length) % filtered.length : null,
     );
   const next = () =>
-    setLightboxIndex((i) =>
-      i !== null ? (i + 1) % filtered.length : null,
-    );
+    setLightboxIndex((i) => (i !== null ? (i + 1) % filtered.length : null));
 
   return (
     <>
-      {/* Inject the keyframe */}
       <style>{`
         @keyframes gallery-scroll-up {
           0%   { transform: translateY(0); }
@@ -152,234 +180,236 @@ export default function GalleryPage() {
           0%   { transform: translateX(-50%); }
           100% { transform: translateX(0); }
         }
+        
+        .infinite-col-image:hover {
+          transform: scale(1.02);
+          box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+        
+        .infinite-col-image:hover .infinite-col-overlay {
+          opacity: 1;
+        }
+        
+        .gallery-grid-hover-overlay { opacity: 0; }
+        div:hover > .gallery-grid-hover-overlay { opacity: 1; }
+        
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .gallery-card {
+          animation: fadeIn 0.5s ease forwards;
+        }
       `}</style>
 
-      <div style={{ minHeight: "100vh", background: "var(--warm-cream)", color: "var(--dark-slate)" }}>
-
+      <div className="min-h-screen bg-gradient-to-br from-violet-50/30 via-white to-teal-50/30 dark:from-violet-950/20 dark:via-gray-900 dark:to-teal-950/20">
         {/* ── STICKY HEADER ─────────────────────────────────── */}
-        <header style={{
-          position: "sticky", top: 0, zIndex: 40,
-          background: "rgba(255,255,255,0.92) dark: rgba(18,18,18,0.92)",
-          backdropFilter: "blur(12px)",
-          borderBottom: "1px solid var(--border)",
-          display: "flex", alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0.75rem 2rem",
-        }}>
-          <Link href="/" style={{
-            display: "flex", alignItems: "center", gap: "0.4rem",
-            fontSize: "0.85rem", fontWeight: 500,
-            color: "var(--muted-foreground)",
-            textDecoration: "none", width: 80,
-          }}>
-            <ArrowLeft size={16} /> Back
-          </Link>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontFamily: "var(--font-heading)", fontWeight: 700 }}>
-            <NextImage src="/sensations_logo.png" alt="Sensations" width={36} height={36} className="object-contain" />
-            <span>Sensations</span>
+        <header className="sticky top-0 z-40 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 shadow-sm">
+          <div className="flex items-center justify-between px-6 lg:px-8 py-3 max-w-7xl mx-auto">
+            <Link
+              href="/"
+              className="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-violet-600 dark:hover:text-violet-400 transition-colors group"
+            >
+              <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> 
+              Back to Home
+            </Link>
+            <div className="flex items-center gap-2">
+              <NextImage
+                src="/sensations_logo.png"
+                alt="Sensations"
+                width={32}
+                height={32}
+                className="object-contain"
+              />
+              <span className="font-heading font-bold text-lg text-gray-900 dark:text-white">
+                Sensations
+              </span>
+            </div>
+            <div className="w-24" />
           </div>
-          <div style={{ width: 80 }} />
         </header>
 
         {/* ── HERO ──────────────────────────────────────────── */}
-        <section style={{
-          padding: "5rem 2rem 3rem", textAlign: "center",
-          background: "linear-gradient(135deg, oklch(0.62 0.14 290 / 0.08) 0%, var(--warm-cream) 50%, oklch(0.60 0.10 195 / 0.08) 100%)",
-        }}>
-          <p style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--muted-teal)", marginBottom: "1rem" }}>
+        <section className="py-20 px-6 lg:px-8 text-center bg-gradient-to-br from-violet-100/30 via-white to-fuchsia-100/30 dark:from-violet-950/30 dark:via-gray-900 dark:to-fuchsia-950/30">
+          <p className="text-sm font-medium text-teal-600 dark:text-teal-400 mb-4 tracking-wide uppercase">
             Creative Showcase
           </p>
-          <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(2.5rem, 6vw, 4.5rem)", fontWeight: 700, lineHeight: 1.1, marginBottom: "1rem" }}>
+          <h1 className="font-heading font-bold text-5xl lg:text-6xl mb-4 bg-gradient-to-r from-violet-600 via-fuchsia-600 to-teal-600 bg-clip-text text-transparent">
             Our Gallery
           </h1>
-          <p style={{ fontSize: "1.05rem", color: "var(--muted-foreground)", maxWidth: "36rem", margin: "0 auto", lineHeight: 1.6 }}>
-            Moments of healing, creativity and community captured through our sessions, concerts and events across Nairobi.
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
+            Moments of healing, creativity and community captured through our
+            sessions, concerts and events across Nairobi.
           </p>
         </section>
 
         {/* ── INFINITE SCROLL COLUMNS ───────────────────────── */}
-        <section style={{
-          position: "relative",
-          height: "75vh", minHeight: 500, maxHeight: 800,
-          overflow: "hidden",
-          background: "oklch(0.14 0.03 270)",
-        }}>
+        <section className="relative h-[75vh] min-h-[500px] max-h-[800px] overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800">
           {/* fade edges */}
-          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 120, zIndex: 10, pointerEvents: "none", background: "linear-gradient(to bottom, oklch(0.14 0.03 270), transparent)" }} />
-          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 120, zIndex: 10, pointerEvents: "none", background: "linear-gradient(to top, oklch(0.14 0.03 270), transparent)" }} />
+          <div className="absolute top-0 left-0 right-0 h-32 z-10 pointer-events-none bg-gradient-to-b from-gray-900 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-32 z-10 pointer-events-none bg-gradient-to-t from-gray-900 to-transparent" />
 
-          {/* 4 columns: down, up, down, up */}
-          <div style={{ display: "flex", gap: 10, height: "100%", padding: "0 10px" }}>
-            <InfiniteColumn images={col1} reverse={false} duration={38} />
-            <InfiniteColumn images={col2} reverse={true}  duration={44} />
+          {/* 4 columns */}
+          <div className="flex gap-3 h-full px-3">
+            <InfiniteColumn images={col1} reverse={false} duration={20} />
+            <InfiniteColumn images={col2} reverse={true} duration={44} />
             <InfiniteColumn images={col3} reverse={false} duration={36} />
-            <InfiniteColumn images={col4} reverse={true}  duration={42} />
+            <InfiniteColumn images={col4} reverse={true} duration={42} />
+           
           </div>
         </section>
 
         {/* ── FILTER + MASONRY GRID ─────────────────────────── */}
-        <section style={{ maxWidth: 1280, margin: "0 auto", padding: "5rem 2rem" }}>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.75rem, 4vw, 2.75rem)", fontWeight: 700, textAlign: "center", marginBottom: "2rem" }}>
-            Browse by Category
-          </h2>
-
-          {/* Filter pills */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.6rem", justifyContent: "center", marginBottom: "3rem" }}>
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                style={{
-                  display: "inline-flex", alignItems: "center", gap: "0.4rem",
-                  padding: "0.5rem 1.25rem", borderRadius: 999,
-                  fontSize: "0.85rem", fontWeight: 500, cursor: "pointer",
-                  border: activeCategory === cat ? "1px solid var(--soft-lavender)" : "1px solid var(--border)",
-                  background: activeCategory === cat ? "var(--soft-lavender)" : "white",
-                  color: activeCategory === cat ? "white" : "var(--muted-foreground)",
-                  boxShadow: activeCategory === cat ? "0 2px 12px oklch(0.62 0.14 290 / 0.3)" : "none",
-                  transition: "all 0.2s",
-                }}
-              >
-                {cat}
-                <span style={{ fontSize: "0.7rem", opacity: 0.7 }}>
-                  {cat === "All" ? GALLERY_IMAGES.length : GALLERY_IMAGES.filter((i) => i.cat === cat).length}
-                </span>
-              </button>
-            ))}
+        <section className="max-w-7xl mx-auto px-6 lg:px-8 py-20">
+          <div className="text-center mb-12">
+            <h2 className="font-heading font-bold text-3xl lg:text-4xl mb-3 text-gray-900 dark:text-white">
+              Browse by Category
+            </h2>
+            <p className="text-gray-500 dark:text-gray-400">Explore our collection of memories and moments</p>
           </div>
 
-          {/* CSS-columns masonry — each card has position:relative for fill */}
-          <div style={{ columns: "4 200px", columnGap: 12 }}>
-            {filtered.map((img, index) => (
-              <div
-                key={img.src}
-                onClick={() => setLightboxIndex(index)}
-                style={{
-                  position: "relative",     /* REQUIRED for next/image fill */
-                  breakInside: "avoid",
-                  marginBottom: 12,
-                  borderRadius: 16,
-                  overflow: "hidden",
-                  background: "var(--muted)",
-                  cursor: "pointer",
-                  aspectRatio: "3 / 4",
-                }}
-              >
-                <NextImage
-                  src={img.src}
-                  alt={img.cat}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  className="object-cover hover:scale-105 transition-transform duration-500"
-                />
-                <div style={{
-                  position: "absolute", inset: 0,
-                  background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)",
-                  display: "flex", alignItems: "flex-end", padding: "0.75rem",
-                  opacity: 0,
-                  transition: "opacity 0.3s",
-                }}
-                  className="gallery-grid-hover-overlay"
+          {/* Filter pills */}
+          <div className="flex flex-wrap gap-3 justify-center mb-12">
+            {CATEGORIES.map((cat) => {
+              const count = cat === "All" ? GALLERY_IMAGES.length : GALLERY_IMAGES.filter((i) => i.cat === cat).length;
+              const gradients: Record<string, string> = {
+                All: "from-violet-600 to-fuchsia-600",
+                Performance: "from-fuchsia-500 to-pink-500",
+                Community: "from-teal-500 to-cyan-500",
+                Team: "from-orange-500 to-amber-500",
+              };
+              const isActive = activeCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 shadow-sm hover:shadow-md ${
+                    isActive
+                      ? `bg-gradient-to-r ${gradients[cat]} text-white shadow-lg`
+                      : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:border-violet-300 dark:hover:border-violet-700 hover:text-violet-600 dark:hover:text-violet-400"
+                  }`}
                 >
-                  <span style={{
-                    display: "inline-block", padding: "0.2rem 0.65rem",
-                    borderRadius: 999, background: "oklch(0.62 0.14 290 / 0.85)",
-                    color: "white", fontSize: "0.7rem", fontWeight: 600,
-                  }}>
-                    {img.cat}
-                  </span>
+                  {cat}
+                  <span className="ml-1.5 text-xs opacity-80">({count})</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Masonry grid */}
+          <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
+            {filtered.map((img, index) => {
+              const gradientMap: Record<string, string> = {
+                Performance: "from-fuchsia-600 to-pink-600",
+                Community: "from-teal-600 to-cyan-600",
+                Team: "from-orange-600 to-amber-600",
+              };
+              return (
+                <div
+                  key={img.src}
+                  onClick={() => setLightboxIndex(index)}
+                  className="relative break-inside-avoid mb-4 rounded-xl overflow-hidden cursor-pointer shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 gallery-card group"
+                >
+                  <NextImage
+                    src={img.src}
+                    alt={img.cat}
+                    width={400}
+                    height={533}
+                    className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div
+                    className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4"
+                  >
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${gradientMap[img.cat] || "from-violet-600 to-fuchsia-600"} shadow-md`}
+                    >
+                      {img.cat}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
-        {/* ── VIDEO PLACEHOLDERS ────────────────────────────── */}
-        <section style={{ padding: "4rem 2rem 6rem", textAlign: "center" }}>
-          <p style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--muted-teal)", marginBottom: "1rem" }}>
+        {/* ── VIDEO SECTION ─────────────────────────────────── */}
+        <section className="py-20 px-6 lg:px-8 text-center bg-gradient-to-br from-fuchsia-50/30 via-white to-violet-50/30 dark:from-fuchsia-950/20 dark:via-gray-900 dark:to-violet-950/20">
+          <p className="text-sm font-medium text-teal-600 dark:text-teal-400 mb-4 tracking-wide uppercase">
             Watch &amp; Listen
           </p>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.75rem, 4vw, 2.5rem)", fontWeight: 700, marginBottom: "0.75rem" }}>
+          <h2 className="font-heading font-bold text-3xl lg:text-4xl mb-3 text-gray-900 dark:text-white">
             Videos
           </h2>
-          <p style={{ color: "var(--muted-foreground)", marginBottom: "2.5rem", maxWidth: "32rem", margin: "0.75rem auto 2.5rem" }}>
-            Watch our performances, therapy sessions and community events — coming soon.
+          <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+            Watch our performances, therapy sessions and community events —
+            coming soon.
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.25rem", maxWidth: 900, margin: "0 auto" }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {[1, 2, 3].map((i) => (
-              <div key={i} style={{
-                background: "white dark:grey" , border: "1px solid var(--border)",
-                borderRadius: 24, padding: "2.5rem 1rem",
-                display: "flex", flexDirection: "column",
-                alignItems: "center", gap: "0.75rem",
-                color: "var(--muted-foreground)", fontSize: "0.875rem", height: 220,
-                justifyContent: "center",
-              }}>
-                <div style={{
-                  width: 52, height: 52, borderRadius: 999,
-                  background: "oklch(0.62 0.14 290 / 0.1)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  color: "var(--soft-lavender)",
-                }}>
-                  <svg fill="currentColor" viewBox="0 0 24 24" width={24} height={24}><path d="M8 5v14l11-7z" /></svg>
+              <div
+                key={i}
+                className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
+              >
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-violet-100 to-fuchsia-100 dark:from-violet-950/50 dark:to-fuchsia-950/50 flex items-center justify-center mx-auto mb-4 shadow-md group-hover:shadow-lg transition-all">
+                  <svg
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    width={28}
+                    height={28}
+                    className="text-violet-600 dark:text-violet-400"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
                 </div>
-                <p>Video coming soon</p>
+                <p className="text-gray-500 dark:text-gray-400 font-medium">Video coming soon</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">Stay tuned!</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* ── FOOTER ────────────────────────────────────────── */}
-        <footer style={{
-          borderTop: "1px solid var(--border)", padding: "2rem",
-          textAlign: "center", fontSize: "0.85rem",
-          color: "var(--muted-foreground)",
-          display: "flex", flexDirection: "column", gap: "0.5rem", alignItems: "center",
-        }}>
-          <p>© 2026 The Sensations · Kariobangi North, Nairobi, Kenya</p>
-          <Link href="/" style={{ color: "var(--soft-lavender)", textDecoration: "none" }}>
-            ← Back to main site
-          </Link>
+        <footer className="border-t border-gray-100 dark:border-gray-800 bg-gradient-to-br from-violet-100/50 via-fuchsia-100/50 to-teal-100/50 dark:from-violet-950/30 dark:via-fuchsia-950/30 dark:to-teal-950/30 py-8 px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto text-center">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+              © 2026 The Sensations · Kariobangi North, Nairobi, Kenya
+            </p>
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-fuchsia-600 dark:hover:text-fuchsia-400 transition-colors group"
+            >
+              <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+              Back to main site
+            </Link>
+          </div>
         </footer>
 
         {/* ── LIGHTBOX ──────────────────────────────────────── */}
         {lightboxIndex !== null && (
           <div
             onClick={closeLightbox}
-            style={{
-              position: "fixed", inset: 0, zIndex: 50,
-              background: "rgba(0,0,0,0.92)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}
+            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
           >
-            <button onClick={closeLightbox} style={{
-              position: "absolute", top: "1.25rem", right: "1.25rem",
-              color: "white", background: "rgba(255,255,255,0.15)",
-              border: "none", borderRadius: 999, width: 40, height: 40,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer",
-            }}>
+            <button
+              onClick={closeLightbox}
+              className="absolute top-5 right-5 text-white bg-white/10 hover:bg-white/20 rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
+            >
               <X size={20} />
             </button>
-            <button onClick={(e) => { e.stopPropagation(); prev(); }} style={{
-              position: "absolute", left: "1.25rem", top: "50%", transform: "translateY(-50%)",
-              color: "white", background: "rgba(255,255,255,0.15)",
-              border: "none", borderRadius: 999, width: 48, height: 48,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer", zIndex: 10,
-            }}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                prev();
+              }}
+              className="absolute left-5 top-1/2 -translate-y-1/2 text-white bg-white/10 hover:bg-white/20 rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
+            >
               <ChevronLeft size={28} />
             </button>
 
             <div
               onClick={(e) => e.stopPropagation()}
-              style={{
-                position: "relative",
-                width: "min(90vw, 1000px)",
-                height: "min(85vh, 700px)",
-                borderRadius: 12,
-                overflow: "hidden",
-              }}
+              className="relative w-[90vw] max-w-4xl h-[85vh] max-h-[700px] rounded-xl overflow-hidden shadow-2xl"
             >
               <NextImage
                 src={filtered[lightboxIndex].src}
@@ -390,33 +420,22 @@ export default function GalleryPage() {
               />
             </div>
 
-            <button onClick={(e) => { e.stopPropagation(); next(); }} style={{
-              position: "absolute", right: "1.25rem", top: "50%", transform: "translateY(-50%)",
-              color: "white", background: "rgba(255,255,255,0.15)",
-              border: "none", borderRadius: 999, width: 48, height: 48,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer", zIndex: 10,
-            }}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                next();
+              }}
+              className="absolute right-5 top-1/2 -translate-y-1/2 text-white bg-white/10 hover:bg-white/20 rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
+            >
               <ChevronRight size={28} />
             </button>
 
-            <div style={{
-              position: "absolute", bottom: "1.5rem", left: "50%", transform: "translateX(-50%)",
-              padding: "0.35rem 1rem",
-              background: "oklch(0.62 0.14 290 / 0.85)",
-              color: "white", borderRadius: 999, fontSize: "0.8rem", fontWeight: 500,
-            }}>
+            <div className="absolute bottom-5 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white text-sm font-medium shadow-lg">
               {filtered[lightboxIndex].cat} · {lightboxIndex + 1} / {filtered.length}
             </div>
           </div>
         )}
       </div>
-
-      {/* hover overlay fix — CSS only, can't do :hover inline */}
-      <style>{`
-        .gallery-grid-hover-overlay { opacity: 0; }
-        div:hover > .gallery-grid-hover-overlay { opacity: 1; }
-      `}</style>
     </>
   );
 }
