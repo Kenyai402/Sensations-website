@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import NextImage from "next/image";
 import { Button } from "@/components/ui/button";
-import { Instagram, Mail } from "lucide-react";
+import { Images, Instagram, Mail } from "lucide-react";
 import Link from "next/link";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 
@@ -148,43 +148,43 @@ const PROGRAMS = [
    ═══════════════════════════════════════════════════════════════════ */
 const TEAM = [
   {
-    initials: "AO",
+    image: "Profile3.jpeg",
     name: "Anton Ombara",
     role: "Founder & CEO",
     gradient: "from-violet-500 to-purple-500",
   },
   {
-    initials: "BO",
+    // image: "/Profile2.jpeg",
     name: "Bonface Odianga",
     role: "Financial Manager",
     gradient: "from-teal-500 to-cyan-500",
   },
   {
-    initials: "DA",
+    image: "/Profile2.jpeg",
     name: "Diana Atieno",
     role: "Director of Communications",
     gradient: "from-fuchsia-500 to-pink-500",
   },
   {
-    initials: "BE",
+    // image: "/Profile4.jpeg",
     name: "Belvine Otieno",
     role: "Head of Operations",
     gradient: "from-violet-500 to-fuchsia-500",
   },
   {
-    initials: "KN",
+    image: "/Preply_profile.jpeg",
     name: "Keren Nyambura",
     role: "Web Designer & Digital Lead",
     gradient: "from-teal-500 to-violet-500",
   },
   {
-    initials: "CP",
+    image: "/Profile4.jpeg",
     name: "Celestine Pollack",
     role: "Social Media Manager",
     gradient: "from-pink-500 to-fuchsia-500",
   },
   {
-    initials: "CO",
+    image: "/Profile1.jpeg",
     name: "Clinton Otieno",
     role: "Head of Talent",
     gradient: "from-violet-500 to-teal-500",
@@ -1655,14 +1655,27 @@ export default function Home() {
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-            {TEAM.slice(0, 4).map(({ initials, name, role, gradient }) => (
+            {TEAM.slice(0, 4).map(({ image, name, role, gradient }) => (
               <div key={name} className="text-center group">
                 <div
-                  className={`w-28 h-28 rounded-3xl bg-gradient-to-br ${gradient} flex items-center justify-center mx-auto mb-5 shadow-lg group-hover:scale-105 transition-transform group-hover:shadow-xl`}
+                  className={`w-28 h-28 rounded-3xl bg-gradient-to-br ${gradient} flex items-center justify-center mx-auto mb-5 shadow-lg group-hover:scale-105 transition-transform group-hover:shadow-xl overflow-hidden`}
                 >
-                  <span className="text-3xl font-heading font-bold text-white">
-                    {initials}
-                  </span>
+                  {image ? (
+                    <NextImage
+                      src={image}
+                      alt={name}
+                      width={112}
+                      height={112}
+                      className="rounded-3xl object-cover w-full h-full"
+                    />
+                  ) : (
+                    <span className="text-3xl font-heading font-bold text-white">
+                      {name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </span>
+                  )}
                 </div>
                 <h3 className="font-heading font-bold text-lg mb-1 text-gray-900 dark:text-white">
                   {name}
@@ -1674,14 +1687,27 @@ export default function Home() {
             ))}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-            {TEAM.slice(4, 7).map(({ initials, name, role, gradient }) => (
+            {TEAM.slice(4, 7).map(({ image, name, role, gradient }) => (
               <div key={name} className="text-center group">
                 <div
-                  className={`w-28 h-28 rounded-3xl bg-gradient-to-br ${gradient} flex items-center justify-center mx-auto mb-5 shadow-lg group-hover:scale-105 transition-transform group-hover:shadow-xl`}
+                  className={`w-28 h-28 rounded-3xl bg-gradient-to-br ${gradient} flex items-center justify-center mx-auto mb-5 shadow-lg group-hover:scale-105 transition-transform group-hover:shadow-x overflow-hidden`}
                 >
-                  <span className="text-3xl font-heading font-bold text-white">
-                    {initials}
-                  </span>
+                  {image ? (
+                    <NextImage
+                      src={image}
+                      alt={name}
+                      width={112}
+                      height={112}
+                      className="rounded-3xl object-cover w-full h-full"
+                    />
+                  ) : (
+                    <span className="text-3xl font-heading font-bold text-white">
+                      {name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </span>
+                  )}
                 </div>
                 <h3 className="font-heading font-bold text-lg mb-1 text-gray-900 dark:text-white">
                   {name}
@@ -1692,7 +1718,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          {/* Source: Annual Report — "Conduct auditions to recruit new artists" */}
+          {/* Join the Team CTA */}
           <div className="bg-gradient-to-r from-violet-100 via-fuchsia-100 to-teal-100 dark:from-violet-950/50 dark:via-fuchsia-950/50 dark:to-teal-950/50 rounded-3xl p-8 text-center border border-gray-100 dark:border-gray-700 shadow-lg mt-16">
             <h3 className="font-heading font-bold text-xl mb-2 text-gray-900 dark:text-white">
               Join the Team
