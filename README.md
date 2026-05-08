@@ -21,19 +21,6 @@ initiative based in Nairobi, Kenya - inspired by the "Akili Yangu Raha Yangu" pr
 - **UI**: shadcn/ui + Lucide React
 - **Fonts**: Playfair Display + Lato
 
-## 🚀 Getting Started
-```bash
-pnpm install
-pnpm dev
-```
-
-## ⚙️ Environment Variables
-Copy `.env.local.example` to `.env.local`:
-```bash
-cp .env.local.example .env.local
-```
-Add your `RESEND_API_KEY` from [resend.com](https://resend.com)
-
 ## 📁 Project Structure
 components/    - UI components
 app/           - Next.js pages & API routes
