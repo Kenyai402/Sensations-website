@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Images, Instagram, Mail } from "lucide-react";
 import Link from "next/link";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
+import PayManually from "@/components/PayManually";
 
 import {
   Palette,
@@ -148,7 +149,7 @@ const PROGRAMS = [
    ═══════════════════════════════════════════════════════════════════ */
 const TEAM = [
   {
-    image: "Profile3.jpeg",
+    image: "/Profile3.jpeg",
     name: "Anton Ombara",
     role: "Founder & CEO",
     gradient: "from-violet-500 to-purple-500",
@@ -160,17 +161,17 @@ const TEAM = [
     gradient: "from-teal-500 to-cyan-500",
   },
   {
-    image: "/Profile2.jpeg",
+    image: "/Profile6.jpeg",
     name: "Diana Atieno",
     role: "Director of Communications",
     gradient: "from-fuchsia-500 to-pink-500",
   },
-  {
-    // image: "/Profile4.jpeg",
-    name: "Belvine Otieno",
-    role: "Head of Operations",
-    gradient: "from-violet-500 to-fuchsia-500",
-  },
+  // {
+  //   // image: "/Profile4.jpeg",
+  //   name: "Belvine Otieno",
+  //   role: "Head of Operations",
+  //   gradient: "from-violet-500 to-fuchsia-500",
+  // },
   {
     image: "/Preply_profile.jpeg",
     name: "Keren Nyambura",
@@ -435,6 +436,7 @@ const NAV_LINKS = [
   { label: "What We Do", href: "#what-we-do" },
   { label: "Events", href: "#events" },
   { label: "Impact", href: "#impact" },
+  { label: "Donate", href: "#donate" },
   { label: "Gallery", href: "#gallery" },
   { label: "Team", href: "#team" },
   { label: "Contact", href: "#contact" },
@@ -1045,12 +1047,19 @@ export default function Home() {
             {/* About slideshow */}
             <div className="relative">
               <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl">
-                <Image
-                  src={aboutImages[currentAboutImage]}
-                  alt="About Sensations"
-                  fill
-                  className="object-cover transition-opacity duration-500"
-                />
+                {aboutImages.map((src, idx) => (
+                  <Image
+                    key={src}
+                    src={src}
+                    alt="About Sensations"
+                    fill
+                    priority={idx === 0}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className={`object-cover transition-opacity duration-700 ${
+                      idx === currentAboutImage ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
+                ))}
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-gray-900/80 to-transparent">
                   <p className="text-white text-sm font-medium">
@@ -1468,6 +1477,8 @@ export default function Home() {
                 src={src}
                 alt="Community healing session"
                 fill
+                priority={idx === 0}
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className={`object-cover transition-opacity duration-1000 ${idx === currentImpactImage ? "opacity-100" : "opacity-0"}`}
               />
             ))}
@@ -1532,6 +1543,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <PayManually />
 
       {/* ── GALLERY TEASER ──────────────────────────────── */}
       <section
@@ -1654,43 +1667,11 @@ export default function Home() {
               Nairobians who believe deeply in the power of art and community.
             </p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-            {TEAM.slice(0, 4).map(({ image, name, role, gradient }) => (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            {TEAM.map(({ image, name, role, gradient }) => (
               <div key={name} className="text-center group">
                 <div
                   className={`w-28 h-28 rounded-3xl bg-gradient-to-br ${gradient} flex items-center justify-center mx-auto mb-5 shadow-lg group-hover:scale-105 transition-transform group-hover:shadow-xl overflow-hidden`}
-                >
-                  {image ? (
-                    <NextImage
-                      src={image}
-                      alt={name}
-                      width={112}
-                      height={112}
-                      className="rounded-3xl object-cover w-full h-full"
-                    />
-                  ) : (
-                    <span className="text-3xl font-heading font-bold text-white">
-                      {name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
-                    </span>
-                  )}
-                </div>
-                <h3 className="font-heading font-bold text-lg mb-1 text-gray-900 dark:text-white">
-                  {name}
-                </h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {role}
-                </p>
-              </div>
-            ))}
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-            {TEAM.slice(4, 7).map(({ image, name, role, gradient }) => (
-              <div key={name} className="text-center group">
-                <div
-                  className={`w-28 h-28 rounded-3xl bg-gradient-to-br ${gradient} flex items-center justify-center mx-auto mb-5 shadow-lg group-hover:scale-105 transition-transform group-hover:shadow-x overflow-hidden`}
                 >
                   {image ? (
                     <NextImage
