@@ -4,6 +4,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+
 :root {
   --warm-cream: oklch(0.985 0.005 285);
   --muted-teal: oklch(0.52 0.09 200);
